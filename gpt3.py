@@ -22,13 +22,18 @@ def write_context(context_filepath, context):
 
 def complete(context):
     context['prompt'] += context['config'].get('start_text', '')
-    new_text = openai.Completion.create(
-        engine='text-davinci-002',
-        prompt=context['prompt'],
-        temperature=context['config']['temperature'],
-        max_tokens=context['config']['max_tokens'],
-        stop=context['config'].get('stop'),
-    ).choices[0].text
+    args = {
+        'engine': 'text-davinci-002',
+        'prompt': context['prompt'],
+        'temperature': context['config'].get('temperature'),
+        'top_p': context['config'].get('top_p'),
+        'max_tokens': context['config'].get('max_tokens'),
+        'stop': context['config'].get('stop'),
+        'suffix': context['config'].get('suffix'),
+        'presence_penalty': context['config'].get('presence_penalty', 0),
+        'frequency_penalty': context['config'].get('frequency_penalty', 0),
+    }
+    new_text = openai.Completion.create(**args).choices[0].text
     print(new_text.strip())
     context['prompt'] += new_text + context['config'].get('restart_text', '')
     return context
@@ -36,7 +41,7 @@ def complete(context):
 
 if __name__ == '__main__':
     if not os.path.isfile('context.yml'):
-        context = read_context('prompts/summarize.yml')
+        context = read_context('prompts/chat.yml')
         write_context('context.yml', context)
 
     while True:
