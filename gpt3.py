@@ -1,6 +1,7 @@
 import openai
 import os
 from ruamel.yaml import YAML
+import argparse
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,7 +23,7 @@ def write_context(context_filepath, context):
 
 def complete(context):
     context['prompt'] += context['config'].get('start_text', '')
-    args = {
+    completion_args = {
         'engine': 'text-davinci-002',
         'prompt': context['prompt'],
         'temperature': context['config'].get('temperature'),
@@ -33,23 +34,32 @@ def complete(context):
         'presence_penalty': context['config'].get('presence_penalty', 0),
         'frequency_penalty': context['config'].get('frequency_penalty', 0),
     }
-    new_text = openai.Completion.create(**args).choices[0].text
+    new_text = openai.Completion.create(**completion_args).choices[0].text
     print(new_text.strip())
     context['prompt'] += new_text + context['config'].get('restart_text', '')
     return context
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--source', type=str)
+    parser.add_argument('-c', '--context', type=str, default='context.yml')
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    if not os.path.isfile('context.yml'):
-        context = read_context('prompts/chat.yml')
-        write_context('context.yml', context)
+    args = parse_args()
+
+    if args.source:
+        context = read_context(args.source)
+        write_context(args.context, context)
 
     while True:
         text_input = input('> ')
-        context = read_context('context.yml')
+        context = read_context(args.context)
         context['prompt'] += text_input
         context = complete(context)
-        write_context('context.yml', context)
+        write_context(args.context, context)
 
-        if not context['config'].get('continuous', False):
+        if not context['config'].get('continuous'):
             break
