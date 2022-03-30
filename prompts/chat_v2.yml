@@ -1,0 +1,17 @@
+config:
+  default:
+    temperature: 0.9
+    max_tokens: 128
+  chat:
+    stop: "\nHuman:"
+    start_text: "\nAI:"
+    restart_text: "\nHuman: "
+  summarize:
+    undo_restart: true
+    start_text: "\n\nThe AI stores the following summary of the conversation in its memory:"
+prompt: |-
+  The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.
+
+  Human: Hello, who are you?
+  AI: I am an AI created by OpenAI. How can I help you today?
+  Human: 

@@ -11,55 +11,78 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 yaml = YAML()
 
 
-def read_context(context_filepath):
-    with open(context_filepath, 'r') as file:
-        return yaml.load(file)
+class Context():
+    def __init__(self, context_filepath):
+        self.context_filepath = context_filepath
+
+    def load(self):
+        with open(self.context_filepath, 'r') as f:
+            self.context = yaml.load(f)
+
+    def save(self):
+        with open(self.context_filepath, 'w') as f:
+            yaml.dump(self.context, f)
+
+    def append(self, text):
+        self.context['prompt'] += text
+
+    def append_start_text(self, type):
+        self.append(self.get_config(type).get('start_text', ''))
+
+    def append_restart_text(self, type):
+        self.append(self.get_config(type).get('restart_text', ''))
+
+    def remove_restart_text(self, type):
+        config = self.get_config(type)
+        if self.context['prompt'].endswith(config.get('restart_text')):
+            self.context['prompt'] = self.context['prompt'][:-len(config['restart_text'])]
+
+    def get_config(self, type):
+        return {**self.context['config']['default'], **self.context['config'][type]}
+
+    def get_args(self, type):
+        config = self.get_config(type)
+        return {
+            'engine': 'text-davinci-002',
+            'prompt': self.context['prompt'],
+            'temperature': config.get('temperature'),
+            'top_p': config.get('top_p'),
+            'max_tokens': config.get('max_tokens'),
+            'stop': config.get('stop'),
+            'suffix': config.get('suffix'),
+            'presence_penalty': config.get('presence_penalty', 0),
+            'frequency_penalty': config.get('frequency_penalty', 0),
+        }
 
 
-def write_context(context_filepath, context):
-    with open(context_filepath, 'w') as file:
-        yaml.dump(context, file)
-
-
-def complete(context):
-    context['prompt'] += context['config'].get('start_text', '')
-    completion_args = {
-        'engine': 'text-davinci-002',
-        'prompt': context['prompt'],
-        'temperature': context['config'].get('temperature'),
-        'top_p': context['config'].get('top_p'),
-        'max_tokens': context['config'].get('max_tokens'),
-        'stop': context['config'].get('stop'),
-        'suffix': context['config'].get('suffix'),
-        'presence_penalty': context['config'].get('presence_penalty', 0),
-        'frequency_penalty': context['config'].get('frequency_penalty', 0),
-    }
-    new_text = openai.Completion.create(**completion_args).choices[0].text
+def complete(context, type):
+    config = context.get_config(type)
+    if config.get('remove_restart_text'):
+        context.remove_restart_text('chat')
+    context.append_start_text(type)
+    new_text = openai.Completion.create(**context.get_args(type)).choices[0].text
+    context.append(new_text)
+    context.append_restart_text(type)
     print(new_text.strip())
-    context['prompt'] += new_text + context['config'].get('restart_text', '')
-    return context
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--source', type=str)
+    # parser.add_argument('-s', '--source', type=str)
     parser.add_argument('-c', '--context', type=str, default='context.yml')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = parse_args()
-
-    if args.source:
-        context = read_context(args.source)
-        write_context(args.context, context)
+    context = Context(args.context)
 
     while True:
         text_input = input('> ')
-        context = read_context(args.context)
-        context['prompt'] += text_input
-        context = complete(context)
-        write_context(args.context, context)
-
-        if not context['config'].get('continuous'):
-            break
+        context.load()
+        if text_input == '/summarize':
+            complete(context, 'summarize')
+        else:
+            context.append(text_input)
+            complete(context, 'chat')
+        context.save()
