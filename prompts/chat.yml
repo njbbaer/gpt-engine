@@ -1,10 +1,11 @@
 config:
+  engine: text-davinci-002
   temperature: 0.9
   max_tokens: 128
-  stop: "\n"
+  stop: 'Human:'
   start_text: "\nAI:"
   restart_text: "\nHuman: "
-  continuous: True
+  summarize_prompt: "\n\nWrite a summary of the conversation:"
 prompt: |-
   The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.
 
