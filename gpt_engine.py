@@ -44,6 +44,9 @@ class Context:
         self.context['prompt'] = prompt[:prompt.rfind('\n')]
 
     def complete(self):
+        with open('debug.txt', 'w') as f:
+            f.write(self.context['prompt'])
+
         keys = ['engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
         args = {k: v for k, v in self.context.items() if k in keys}
         args['prompt'] = self.context['prompt']
@@ -57,12 +60,15 @@ class Chat:
             self.context.copy('initial_prompt')
             self.context.save()
 
-    def speak(self, message):
+    def speak(self, message, inject_prompt=None):
         self.context.load()
         self.context.set(message, append=True)
+        self.context.save()
+        self.context.set(inject_prompt, append=True)
         self.context.copy('start_text', append=True)
         response = self.format_response(self.context.complete())
-        self.response_history.append(response)
+        self.context.load()
+        self.context.copy('start_text', append=True)
         self.context.set(response, append=True)
         self.context.copy('restart_text', append=True)
         self.context.save()
@@ -85,8 +91,8 @@ class Chat:
             if message == '/summarize':
                 response = self.summarize()
             else:
-                response = self.speak(message)
-                print(self.average_response_length())
+                inject_prompt = self.context.get('inject_prompt')
+                response = self.speak(message, inject_prompt)
             print(response)
 
     def format_response(self, text):
@@ -96,4 +102,3 @@ class Chat:
 if '__main__' == __name__:
     chat = Chat()
     chat.converse()
-    # chat.summarize()
