@@ -5,6 +5,9 @@ import openai
 import os
 import textwrap
 
+from dotenv import load_dotenv
+load_dotenv()
+
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 yaml = YAML()
@@ -26,14 +29,15 @@ class Context:
     def get(self, key):
         return self.context.get(key)
 
-    def set(self, text, dest='prompt', replace=False):
-        if replace:
-            self.context[dest] = text
+    def set(self, text, dest='prompt', append=False):
+        if append:
+            self.context[dest] += text or ''
         else:
-            self.context[dest] += text
+            self.context[dest] = text
 
-    def copy(self, source, dest='prompt', replace=False):
-        self.set(self.context[source], dest, replace)
+    def copy(self, source, dest='prompt', append=False):
+        source_value = self.context.get(source)
+        self.set(source_value, dest, append)
 
     def remove_last_line(self):
         prompt = self.context['prompt']
@@ -49,25 +53,29 @@ class Context:
 class Chat:
     def __init__(self):
         self.context = Context('context.yml')
+        if not self.context.get('prompt'):
+            self.context.copy('initial_prompt')
+            self.context.save()
 
     def speak(self, message):
         self.context.load()
-        self.context.set(message)
-        self.context.copy('start_text')
+        self.context.set(message, append=True)
+        self.context.copy('start_text', append=True)
         response = self.format_response(self.context.complete())
-        self.context.set(response)
-        self.context.copy('restart_text')
+        self.response_history.append(response)
+        self.context.set(response, append=True)
+        self.context.copy('restart_text', append=True)
         self.context.save()
         return response
 
     def summarize(self):
         self.context.load()
         self.context.remove_last_line()
-        self.context.copy('summarize_prompt')
+        self.context.copy('summarize_prompt', append=True)
         response = self.format_response(self.context.complete())
         summary_yaml = LiteralScalarString(textwrap.dedent(response))
         self.context.load()
-        self.context.set(summary_yaml, 'summary', replace=True)
+        self.context.set(summary_yaml, 'summary')
         self.context.save()
         return response
 
@@ -78,6 +86,7 @@ class Chat:
                 response = self.summarize()
             else:
                 response = self.speak(message)
+                print(self.average_response_length())
             print(response)
 
     def format_response(self, text):
