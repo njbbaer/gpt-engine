@@ -1,9 +1,6 @@
-from email.message import Message
 from ruamel.yaml import YAML
-from ruamel.yaml.scalarstring import LiteralScalarString
 import openai
 import os
-import textwrap
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -29,43 +26,45 @@ class Context:
     def get(self, key):
         return self.context.get(key)
 
-    def set(self, text, dest='prompt', append=False):
-        if append:
-            self.context[dest] += text or ''
-        else:
-            self.context[dest] = text
+    def set(self, text=None, source=None, dest='prompt'):
+        text = text or self.get(source)
+        self.context[dest] = text
 
-    def copy(self, source, dest='prompt', append=False):
-        source_value = self.context.get(source)
-        self.set(source_value, dest, append)
+    def append(self, text=None, source=None, dest='prompt'):
+        text = text or self.get(source)
+        self.context[dest] += text or ''
 
-    def complete(self):
-        with open('debug.txt', 'w') as f:
-            f.write(self.context['prompt'])
-
+    def gpt_args(self):
         keys = ['engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
         args = {k: v for k, v in self.context.items() if k in keys}
         args['prompt'] = self.context['prompt']
-        return openai.Completion.create(**args).choices[0].text
+        return args
 
 
 class Chat:
     def __init__(self):
         self.context = Context('context.yml')
 
+    def complete(self):
+        with open('debug.txt', 'w') as f:
+            f.write(self.context.get('prompt'))
+
+        args = self.context.gpt_args()
+        return openai.Completion.create(**args).choices[0].text
+
     def speak(self):
         self.context.load()
-        self.context.copy('restart_text', append=True)
-        self.context.copy('input', append=True)
-        self.context.copy('inject_prompt', append=True)
-        self.context.copy('start_text', append=True)
-        response = self.format_response(self.context.complete())
+        self.context.append(source='restart_text')
+        self.context.append(source='input')
+        self.context.append(source='inject_prompt')
+        self.context.append(source='start_text')
+        response = self.format_response(self.complete())
         self.context.load()
-        self.context.copy('restart_text', append=True)
-        self.context.copy('input', append=True)
-        self.context.copy('start_text', append=True)
-        self.context.set(response, append=True)
-        self.context.set(None, 'input')
+        self.context.append(source='restart_text')
+        self.context.append(source='input')
+        self.context.append(source='start_text')
+        self.context.append(response)
+        self.context.set(None, dest='input')
         self.context.save()
         return response
 
@@ -75,4 +74,10 @@ class Chat:
 
 if '__main__' == __name__:
     chat = Chat()
-    chat.speak()
+    if chat.context.get('input'):
+        chat.speak()
+    else:
+        response = chat.complete()
+        print(response)
+        chat.context.append(response)
+        chat.context.save()
