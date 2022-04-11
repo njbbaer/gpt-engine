@@ -34,35 +34,41 @@ class Context:
         text = text or self.get(source)
         self.context[dest] += text or ''
 
-    def gpt_args(self):
-        keys = ['engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
-        args = {k: v for k, v in self.context.items() if k in keys}
-        args['prompt'] = self.context['prompt']
-        return args
+    def gpt_params(self):
+        params = self.context.get('gpt_params')
+        params['prompt'] = self.context['prompt']
+        return params
 
 
-class Chat:
-    def __init__(self):
-        self.context = Context('context.yml')
+class Engine:
+    def __init__(self, context):
+        self.context = context
 
-    def complete(self):
+    def run(self):
+        response = self.complete()
+        self.context.append(response)
+        self.context.save()
+        return response
+
+    def complete(self, custom_args={}):
         with open('debug.txt', 'w') as f:
             f.write(self.context.get('prompt'))
 
-        args = self.context.gpt_args()
+        args = {**self.context.gpt_params(), **custom_args}
         return openai.Completion.create(**args).choices[0].text
 
-    def speak(self):
+
+class Chat(Engine):
+    def run(self):
         self.context.load()
-        self.context.append(source='restart_text')
-        self.context.append(source='input')
-        self.context.append(source='inject_prompt')
-        self.context.append(source='start_text')
-        response = self.format_response(self.complete())
+        self.context.append(self.input_prompt())
+        self.context.append(source='blind_prompt')
+        self.context.append(self.response_prompt())
+        raw_response = self.complete({'stop': self.stop_text()})
+        response = self.format_response(raw_response)
         self.context.load()
-        self.context.append(source='restart_text')
-        self.context.append(source='input')
-        self.context.append(source='start_text')
+        self.context.append(self.input_prompt())
+        self.context.append(self.response_prompt())
         self.context.append(response)
         self.context.set(None, dest='input')
         self.context.save()
@@ -71,13 +77,30 @@ class Chat:
     def format_response(self, text):
         return " " + " ".join(text.split())
 
+    def input_prompt(self):
+        if self.context.get("input"):
+            return f'\n{self.context.get("input_name")}: {self.context.get("input")}'
+        else:
+            return ''
+
+    def response_prompt(self):
+        return f'\n{self.context.get("response_name")}:'
+
+    def stop_text(self):
+        return f'{self.context.get("input_name")}:'
+
+
+class GPTEngine:
+    def __init__(self, filepath):
+        self.context = Context(filepath)
+
+    def run(self):
+        if self.context.get('engine') == 'chat':
+            return Chat(self.context).run()
+        else:
+            return Engine(self.context).run()
+
 
 if '__main__' == __name__:
-    chat = Chat()
-    if chat.context.get('input'):
-        chat.speak()
-    else:
-        response = chat.complete()
-        print(response)
-        chat.context.append(response)
-        chat.context.save()
+    gpt_engine = GPTEngine('context.yml')
+    print(gpt_engine.run())
