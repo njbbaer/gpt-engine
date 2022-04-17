@@ -1,4 +1,3 @@
-from ruamel.yaml import YAML
 import openai
 import os
 
@@ -6,38 +5,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
-
-yaml = YAML()
-
-
-class Context:
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.load()
-
-    def load(self):
-        with open(self.filepath, 'r') as f:
-            self.context = yaml.load(f)
-
-    def save(self):
-        with open(self.filepath, 'w') as f:
-            yaml.dump(self.context, f)
-
-    def get(self, key):
-        return self.context.get(key)
-
-    def set(self, text=None, source=None, dest='prompt'):
-        text = text or self.get(source)
-        self.context[dest] = text
-
-    def append(self, text=None, source=None, dest='prompt'):
-        text = text or self.get(source)
-        self.context[dest] += text or ''
-
-    def gpt_params(self):
-        params = self.context.get('gpt_params')
-        params['prompt'] = self.context['prompt']
-        return params
 
 
 class Engine:
@@ -88,19 +55,3 @@ class Chat(Engine):
 
     def stop_text(self):
         return f'{self.context.get("input_name")}:'
-
-
-class GPTEngine:
-    def __init__(self, filepath):
-        self.context = Context(filepath)
-
-    def run(self):
-        if self.context.get('engine') == 'chat':
-            return Chat(self.context).run()
-        else:
-            return Engine(self.context).run()
-
-
-if '__main__' == __name__:
-    gpt_engine = GPTEngine('context.yml')
-    print(gpt_engine.run())
