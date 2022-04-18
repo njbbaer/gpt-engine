@@ -19,6 +19,9 @@ class Context:
     def get(self, key):
         return self.context.get(key)
 
+    def keys(self):
+        return self.context.keys()
+
     def set(self, text=None, source=None, dest='prompt'):
         text = text or self.get(source)
         self.context[dest] = text
