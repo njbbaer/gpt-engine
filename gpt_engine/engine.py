@@ -1,6 +1,8 @@
 import openai
 import os
+
 from ruamel.yaml import YAML
+from ruamel.yaml.scalarstring import LiteralScalarString
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -65,7 +67,7 @@ class Engine:
         entry = [{
             'timestamp': datetime.now(),
             'input': args,
-            'output': output,
+            'output': LiteralScalarString(output),
         }]
         with open('log.yml', 'a') as f:
             yaml.dump(entry, f)
