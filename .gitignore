@@ -1,5 +1,4 @@
 .env
 prompts/drafts
-context.yml
-debug.txt
+log.yml
 __pycache__

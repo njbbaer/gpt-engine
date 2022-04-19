@@ -1,7 +1,11 @@
 import openai
 import os
-
+from ruamel.yaml import YAML
 from dotenv import load_dotenv
+from datetime import datetime
+
+yaml = YAML()
+
 load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -24,27 +28,27 @@ class Engine:
         'suffix',
         'temperature',
         'top_p',
+        'total_cost',
     ]
 
     def __init__(self, context):
         self.context = context
 
     def run(self):
-        response = self.complete()
+        response = self._complete()
         self.context.append(response)
         self.context.save()
         return response
 
-    def complete(self, custom_args={}):
-        with open('debug.txt', 'w') as f:
-            f.write(self.context.get('prompt'))
-
-        args = {**self.context.gpt_params(), **custom_args}
-        return openai.Completion.create(**args).choices[0].text
-
     def validate_keys(self):
         self._validate_required_keys()
         self._validate_permitted_keys()
+
+    def _complete(self, custom_args={}):
+        args = {**self.context.gpt_params(), **custom_args}
+        output = openai.Completion.create(**args).choices[0].text
+        self._write_to_log(args, output)
+        return output
 
     def _validate_permitted_keys(self):
         invalid_keys = list(set(self.context.keys()) - set(self.PERMITTED_KEYS))
@@ -56,6 +60,15 @@ class Engine:
         if missing_keys:
             raise Exception(f'Missing keys: {missing_keys}')
 
+    def _write_to_log(self, args, output):
+        entry = [{
+            'timestamp': datetime.now(),
+            'input': args,
+            'output': output,
+        }]
+        with open('log.yml', 'a') as f:
+            yaml.dump(entry, f)
+
 
 class Chat(Engine):
     REQUIRED_KEYS = ['engine', 'input_name', 'prompt', 'response_name']
@@ -65,7 +78,7 @@ class Chat(Engine):
         self.context.append(self._input_prompt())
         self.context.append(source='blind_prompt')
         self.context.append(self._response_prompt())
-        raw_response = self.complete({'stop': self._stop_text()})
+        raw_response = self._complete({'stop': self._stop_text()})
         response = self._format_response(raw_response)
         self.context.load()
         self.context.append(self._input_prompt())
