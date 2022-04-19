@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 yaml = YAML()
+yaml.width = float('inf')
 
 load_dotenv()
 
