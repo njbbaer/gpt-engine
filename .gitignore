@@ -1,4 +1,4 @@
 .env
+*.yml
 prompts/drafts
-log.yml
 __pycache__

@@ -77,18 +77,13 @@ class Chat(Engine):
     REQUIRED_KEYS = ['engine', 'input_name', 'prompt', 'response_name']
 
     def run(self):
-        self.context.load()
         self.context.append(self._input_prompt())
-        self.context.append(source='blind_prompt')
+        self.context.append(source='blind_prompt', blind=True)
         self.context.append(self._response_prompt())
         raw_response = self._complete({'stop': self._stop_text()})
         response = self._format_response(raw_response)
-        self.context.load()
-        self.context.append(self._input_prompt())
-        self.context.append(self._response_prompt())
         self.context.append(response)
         self.context.set(None, dest='input')
-        self.context.save()
         return response
 
     def _format_response(self, text):
