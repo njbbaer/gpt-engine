@@ -1,6 +1,12 @@
 from .context import Context
-from .helpers import execute
+from .engine import Chat, Engine
 
-context = Context('context.yml')
-output = execute(context)
+with open('context.yml', 'r') as f:
+    yaml_string = f.read()
+
+context = Context(yaml_string)
+output = Engine.create(context).run()
 print(output)
+
+with open('context.yml', 'w') as f:
+    f.write(context.export())

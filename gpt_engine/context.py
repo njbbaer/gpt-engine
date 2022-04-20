@@ -1,22 +1,19 @@
+import io
 from ruamel.yaml import YAML
 
 yaml = YAML()
+yaml.width = float('inf')
 
 
 class Context:
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.load()
+    def __init__(self, yaml_string):
+        self.context = yaml.load(yaml_string)
+        self.replica = yaml.load(yaml_string)
 
-    def load(self):
-        with open(self.filepath, 'r') as f:
-            content = f.read()
-        self.context = yaml.load(content)
-        self.replica = yaml.load(content)
-
-    def save(self):
-        with open(self.filepath, 'w') as f:
-            yaml.dump(self.replica, f)
+    def export(self):
+        buf = io.BytesIO()
+        yaml.dump(self.replica, buf)
+        return buf.getvalue().decode('utf-8')
 
     def get(self, key):
         return self.context.get(key)

@@ -34,8 +34,18 @@ class Engine:
         'total_cost',
     ]
 
+    @staticmethod
+    def create(context):
+        schema = context.get('schema')
+        if schema == 'chat':
+            engine_class = Chat
+        else:
+            engine_class = Engine
+        return engine_class(context)
+
     def __init__(self, context):
         self.context = context
+        self._validate_keys()
 
     def run(self):
         response = self._complete()
@@ -43,7 +53,7 @@ class Engine:
         self.context.save()
         return response
 
-    def validate_keys(self):
+    def _validate_keys(self):
         self._validate_required_keys()
         self._validate_permitted_keys()
 
