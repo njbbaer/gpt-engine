@@ -5,8 +5,8 @@ from ruamel.yaml import YAML
 
 yaml = YAML()
 
-parser = argparse.ArgumentParser(description="Run your GPT-3 powered agent.")
-parser.add_argument("-p", "--prompt", type=str, help="The location of your prompt file")
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", "--prompt", type=str)
 args = parser.parse_args()
 
 prompt_file = args.prompt or 'context.yml'

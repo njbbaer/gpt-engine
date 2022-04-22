@@ -19,7 +19,6 @@ class Agent:
         'engine': 'text-davinci-002',
         'max_tokens': 256,
     }
-
     REQUIRED_KEYS = ['prompt']
     PERMITTED_KEYS = [
         'blind_prompt',
@@ -40,10 +39,13 @@ class Agent:
 
     @staticmethod
     def create(context):
-        if context.get('agent') == 'chat':
+        agent = context.get('agent')
+        if agent == 'chat':
             agent_class = Chat
-        else:
+        elif not agent:
             agent_class = Agent
+        else:
+            raise Exception(f'Invalid agent: {agent}')
         return agent_class(context)
 
     def __init__(self, context):
@@ -88,7 +90,10 @@ class Chat(Agent):
     REQUIRED_KEYS = ['prompt', 'input_name', 'output_name']
 
     def run(self):
-        temp_prompt = self.context['prompt'] + self._input_prompt() + (self.context.get('blind_prompt') or '') + self._response_prompt()
+        temp_prompt = self.context['prompt'] + \
+            self._input_prompt() + \
+            self._blind_prompt() + \
+            self._response_prompt()
         raw_response = self._complete({'prompt': temp_prompt, 'stop': self._stop_text()})
         response = self._format_response(raw_response)
         self.context['prompt'] += self._input_prompt() + self._response_prompt() + response
@@ -109,3 +114,6 @@ class Chat(Agent):
 
     def _stop_text(self):
         return f'{self.context["input_name"]}:'
+
+    def _blind_prompt(self):
+        return self.context.get('blind_prompt') or ''
