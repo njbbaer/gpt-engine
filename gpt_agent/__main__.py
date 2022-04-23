@@ -1,7 +1,8 @@
 import argparse
 
-from .agent import Agent
 from ruamel.yaml import YAML
+
+from .agent import Agent
 
 yaml = YAML()
 

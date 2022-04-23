@@ -39,6 +39,8 @@ class Agent:
 
     @staticmethod
     def create(context):
+        if context is None:
+            raise Exception(f'Missing context')
         agent = context.get('agent')
         if agent == 'chat':
             agent_class = Chat
