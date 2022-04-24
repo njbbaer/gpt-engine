@@ -2,3 +2,4 @@
 *.yml
 prompts/drafts
 __pycache__
+.pytest.cache

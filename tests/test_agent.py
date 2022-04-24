@@ -1,30 +1,44 @@
+import pytest
 
-import unittest
-from unittest.mock import patch, mock_open
 from types import SimpleNamespace
 
 from gpt_agent.agent import Agent
 
-mock_completion = SimpleNamespace(choices=[SimpleNamespace(text=' foo')])
+
+@pytest.fixture
+def mock_completion(mocker):
+    completion = SimpleNamespace(choices=[SimpleNamespace(text=' foo')])
+    mocker.patch('openai.Completion.create', return_value=completion)
+    mocker.patch("builtins.open", mocker.mock_open())
 
 
-@patch('openai.Completion.create', return_value=mock_completion)
-@patch('builtins.open', new_callable=mock_open())
-class TestAgent(unittest.TestCase):
-    def test_agent(self, mock_completion, mock_open):
-        context = {
-            'prompt': 'foo'
-        }
-        new_context = Agent.create(context).run()
-        self.assertEqual(new_context['prompt'], 'foo foo')
+def test_agent(mock_completion):
+    context = {
+        'prompt': 'foo'
+    }
+    new_context = Agent.create(context).run()
+    assert new_context['prompt'] == 'foo foo'
 
-    def test_chat(self, mock_completion, mock_open):
-        context = {
-            'agent': 'chat',
-            'prompt': 'A conversation',
-            'input_name': 'Human',
-            'output_name': 'AI',
-            'input': 'Hello',
-        }
-        new_context = Agent.create(context).run()
-        self.assertEqual(new_context['prompt'], 'A conversation\nHuman: Hello\nAI: foo')
+
+def test_chat(mock_completion):
+    context = {
+        'agent': 'chat',
+        'prompt': 'A conversation',
+        'input_name': 'Human',
+        'output_name': 'AI',
+        'input': 'Hello',
+    }
+    new_context = Agent.create(context).run()
+    assert new_context['prompt'] == 'A conversation\nHuman: Hello\nAI: foo'
+
+
+def test_missing_key():
+    with pytest.raises(Exception) as exc_info:
+        Agent.create({}).run()
+    assert 'missing key' in str(exc_info.value).lower()
+
+
+def test_invalid_key():
+    with pytest.raises(Exception) as exc_info:
+        Agent.create({'invalid_key': 'foo'}).run()
+    assert 'invalid key' in str(exc_info.value).lower()
