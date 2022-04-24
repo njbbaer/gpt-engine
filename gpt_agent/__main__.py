@@ -7,15 +7,19 @@ from .agent import Agent
 yaml = YAML()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--prompt", type=str)
+parser.add_argument("-c", "--context", type=str)
+parser.add_argument("-i", "--input", type=str)
 args = parser.parse_args()
 
-prompt_file = args.prompt or 'context.yml'
+prompt_file = args.context or 'context.yml'
 
 with open(prompt_file, 'r') as f:
     context = yaml.load(f)
 
-context = Agent.create(context).run()
+context['input'] = args.input
 
-with open(prompt_file, 'w') as f:
+context = Agent.create(context).run()
+print(context['output'].lstrip())
+
+with open('context.yml', 'w') as f:
     yaml.dump(context, f)

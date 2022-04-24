@@ -27,10 +27,12 @@ class Agent:
         'input',
         'input_name',
         'max_tokens',
+        'output',
         'output_name',
         'presence_penalty',
         'prompt',
         'agent',
+        'start_text',
         'stop',
         'suffix',
         'temperature',
@@ -55,6 +57,7 @@ class Agent:
         self._validate_keys()
 
     def run(self):
+        self.context['prompt'] += self.context.get('input') or ''
         self.context['prompt'] += self.context.get('start_text') or ''
         output = self._complete()
         self.context['prompt'] += output + (self.context.get('restart_text') or '')
@@ -65,14 +68,16 @@ class Agent:
         params = {k: v for k, v in self.context.items() if k in keys}
         args = {**self.DEFAULTS, **params, **override}
         output = openai.Completion.create(**args).choices[0].text
-        self._write_log(args['prompt'], output)
+        self.context['output'] = output
+        self._write_log(args['prompt'])
         return output
 
-    def _write_log(self, prompt, output):
+    def _write_log(self, prompt):
+        output = self.context['output']
         entry = [{
             'timestamp': datetime.now(),
             'prompt': LiteralScalarString(prompt),
-            'output': LiteralScalarString(output.lstrip()),
+            'output': LiteralScalarString(output),
         }]
         with open('log.yml', 'a') as f:
             yaml.dump(entry, f)
