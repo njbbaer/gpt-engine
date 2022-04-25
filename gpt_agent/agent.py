@@ -68,7 +68,7 @@ class Agent:
         params = {k: v for k, v in self.context.items() if k in keys}
         args = {**self.DEFAULTS, **params, **override}
         output = openai.Completion.create(**args).choices[0].text
-        self.context['output'] = output
+        self.context['output'] = output.lstrip()
         self._write_log(args['prompt'])
         return output
 
