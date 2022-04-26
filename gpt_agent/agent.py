@@ -41,9 +41,7 @@ class Agent:
 
     @staticmethod
     def create(context):
-        if context is None:
-            raise Exception(f'Missing context')
-        agent = context.get('agent')
+        agent = context['agent']
         if agent == 'chat':
             agent_class = Chat
         elif not agent:
@@ -54,19 +52,23 @@ class Agent:
 
     def __init__(self, context):
         self.context = context
-        self._validate_keys()
+        self.context.validate_keys(self.REQUIRED_KEYS, self.PERMITTED_KEYS)
 
     def run(self):
-        self.context['prompt'] += self.context.get('input') or ''
-        self.context['prompt'] += self.context.get('start_text') or ''
+        self.context['prompt'] += self.context['input']
+        self.context['prompt'] += self.context['start_text']
         output = self._complete()
-        self.context['prompt'] += output + (self.context.get('restart_text') or '')
+        self.context['prompt'] += output + self.context['restart_text']
         return self.context
 
+    def run_cli(self, args):
+        self.context['input'] = args.input
+        self.run()
+        print(self.context['output'])
+        self.context.save()
+
     def _complete(self, override={}):
-        keys = ['prompt', 'engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
-        params = {k: v for k, v in self.context.items() if k in keys}
-        args = {**self.DEFAULTS, **params, **override}
+        args = {**self.DEFAULTS, **self.context.gpt_params(), **override}
         output = openai.Completion.create(**args).choices[0].text
         self.context['output'] = output.lstrip()
         self._write_log(args['prompt'])
@@ -82,16 +84,6 @@ class Agent:
         with open('log.yml', 'a') as f:
             yaml.dump(entry, f)
 
-    def _validate_keys(self):
-        missing_keys = list(set(self.REQUIRED_KEYS) - set(self.context.keys()))
-        invalid_keys = list(set(self.context.keys()) - set(self.PERMITTED_KEYS))
-        if missing_keys and invalid_keys:
-            raise Exception(f'Missing key(s): {missing_keys}, Invalid key(s): {invalid_keys}')
-        elif missing_keys:
-            raise Exception(f'Missing key(s): {missing_keys}')
-        elif invalid_keys:
-            raise Exception(f'Invalid key(s): {invalid_keys}')
-
 
 class Chat(Agent):
     REQUIRED_KEYS = ['prompt', 'input_name', 'output_name']
@@ -99,28 +91,36 @@ class Chat(Agent):
     def run(self):
         temp_prompt = self.context['prompt'] + \
             self._input_prompt() + \
-            self._blind_prompt() + \
+            self.context['blind_prompt'] + \
             self._response_prompt()
-        raw_response = self._complete({'prompt': temp_prompt, 'stop': self._stop_text()})
+        raw_response = self._complete({
+            'prompt': temp_prompt,
+            'stop': f'{self.context["input_name"]}:'
+        })
         response = self._format_response(raw_response)
         self.context['prompt'] += self._input_prompt() + self._response_prompt() + response
         self.context['input'] = None
         return self.context
 
+    def run_cli(self, args):
+        input_arg = args.input
+        while True:
+            input_text = input_arg or input(f'{self.context["input_name"]}: ')
+            input_arg = None
+            self.context.load()
+            self.context['input'] = input_text
+            self.run()
+            print(f'{self.context["output_name"]}: {self.context["output"]}')
+            self.context.save()
+
     def _format_response(self, text):
         return " " + " ".join(text.split())
 
     def _input_prompt(self):
-        if self.context.get('input'):
+        if self.context['input']:
             return f'\n{self.context["input_name"]}: {self.context["input"]}'
         else:
             return ''
 
     def _response_prompt(self):
         return f'\n{self.context["output_name"]}:'
-
-    def _stop_text(self):
-        return f'{self.context["input_name"]}:'
-
-    def _blind_prompt(self):
-        return self.context.get('blind_prompt') or ''
