@@ -25,10 +25,10 @@ class Agent:
         'engine',
         'frequency_penalty',
         'input',
-        'input_name',
+        'input_prefix',
         'max_tokens',
         'output',
-        'output_name',
+        'output_prefix',
         'presence_penalty',
         'prompt',
         'agent',
@@ -70,7 +70,7 @@ class Agent:
     def _complete(self, override={}):
         args = {**self.DEFAULTS, **self.context.gpt_params(), **override}
         output = openai.Completion.create(**args).choices[0].text
-        self.context['output'] = output.lstrip()
+        self.context['output'] = output.strip()
         self._write_log(args['prompt'])
         return output
 
@@ -86,41 +86,43 @@ class Agent:
 
 
 class Chat(Agent):
-    REQUIRED_KEYS = ['prompt', 'input_name', 'output_name']
+    REQUIRED_KEYS = ['prompt', 'input_prefix']
 
     def run(self):
         temp_prompt = self.context['prompt'] + \
             self._input_prompt() + \
             self.context['blind_prompt'] + \
-            self._response_prompt()
-        raw_response = self._complete({
+            '\n' + \
+            self.context['output_prefix']
+        response = self._complete({
             'prompt': temp_prompt,
-            'stop': f'{self.context["input_name"]}:'
-        })
-        response = self._format_response(raw_response)
-        self.context['prompt'] += self._input_prompt() + self._response_prompt() + response
+            'stop': self.context['input_prefix'].strip(),
+        }).rstrip()
+        self.context['output'] = response
+        self.context['prompt'] += self._input_prompt() + self._response_prompt()
         self.context['input'] = None
         return self.context
 
     def run_cli(self, args):
         input_arg = args.input
         while True:
-            input_text = input_arg or input(f'{self.context["input_name"]}: ')
+            input_text = input_arg or input(self.context['input_prefix'])
             input_arg = None
             self.context.load()
             self.context['input'] = input_text
             self.run()
-            print(f'{self.context["output_name"]}: {self.context["output"]}')
+            if self.context['output']:
+                print(self._response_prompt().strip())
             self.context.save()
-
-    def _format_response(self, text):
-        return " " + " ".join(text.split())
 
     def _input_prompt(self):
         if self.context['input']:
-            return f'\n{self.context["input_name"]}: {self.context["input"]}'
+            return '\n' + self.context['input_prefix'] + self.context['input']
         else:
             return ''
 
     def _response_prompt(self):
-        return f'\n{self.context["output_name"]}:'
+        if self.context['output']:
+            return '\n' + self.context['output_prefix'] + self.context['output']
+        else:
+            return ''

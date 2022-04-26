@@ -25,8 +25,8 @@ def test_chat(mock_completion):
     context = Context({
         'agent': 'chat',
         'prompt': 'A conversation',
-        'input_name': 'Human',
-        'output_name': 'AI',
+        'input_prefix': 'Human: ',
+        'output_prefix': 'AI:',
         'input': 'Hello',
     })
     new_context = Agent.create(context).run()
