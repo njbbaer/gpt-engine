@@ -25,12 +25,25 @@ def test_chat(mock_completion):
     context = Context({
         'agent': 'chat',
         'prompt': 'A conversation',
-        'input_prefix': 'Human: ',
-        'output_prefix': 'AI:',
+        'input_prefix': 'Human',
+        'output_prefix': 'AI',
         'input': 'Hello',
     })
     new_context = Agent.create(context).run()
     assert new_context['prompt'] == 'A conversation\nHuman: Hello\nAI: foo'
+
+
+def test_chat_bash(mock_completion):
+    context = Context({
+        'agent': 'chat',
+        'prompt': 'BASH shell',
+        'input_prefix': '$ ',
+        'output_prefix': '',
+        'seperator': '',
+        'input': 'pwd',
+    })
+    new_context = Agent.create(context).run()
+    assert new_context['prompt'] == 'BASH shell\n$ pwd\nfoo'
 
 
 def test_missing_key():

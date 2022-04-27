@@ -6,11 +6,21 @@ yaml.width = float('inf')
 
 
 class Context:
+    DEFAULTS = {
+        'engine': 'text-davinci-002',
+        'max_tokens': 256,
+        'seperator': ': '
+    }
+
     def __init__(self, context):
         self.context = context
 
     def __getitem__(self, key):
-        return self.context.get(key) or ''
+        value = self.context.get(key)
+        if value is None:
+            return self.DEFAULTS.get(key) or ''
+        else:
+            return value
 
     def __setitem__(self, key, value):
         self.context[key] = value
@@ -27,7 +37,8 @@ class Context:
 
     def gpt_params(self):
         keys = ['prompt', 'engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
-        return {k: v for k, v in self.context.items() if k in keys}
+        params = {k: v for k, v in self.context.items() if k in keys}
+        return {**self.DEFAULTS, **params}
 
     def export_json(self):
         return json.dumps(self.context)

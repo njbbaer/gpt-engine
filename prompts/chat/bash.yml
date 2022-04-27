@@ -1,6 +1,6 @@
 agent: chat
-input_prefix: '$ '
 output_prefix: ''
+input_prefix: '$ '
 max_tokens: 64
 prompt: |-
   $ bash --version

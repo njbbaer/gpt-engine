@@ -15,10 +15,6 @@ load_dotenv()
 
 
 class Agent:
-    DEFAULTS = {
-        'engine': 'text-davinci-002',
-        'max_tokens': 256,
-    }
     REQUIRED_KEYS = ['prompt']
     PERMITTED_KEYS = [
         'blind_prompt',
@@ -32,6 +28,7 @@ class Agent:
         'presence_penalty',
         'prompt',
         'agent',
+        'seperator',
         'start_text',
         'stop',
         'suffix',
@@ -68,7 +65,7 @@ class Agent:
         self.context.save()
 
     def _complete(self, override={}):
-        args = {**self.DEFAULTS, **self.context.gpt_params(), **override}
+        args = {**self.context.gpt_params(), **override}
         output = openai.Completion.create(**args).choices[0].text
         self.context['output'] = output.strip()
         self._write_log(args['prompt'])
@@ -86,8 +83,6 @@ class Agent:
 
 
 class Chat(Agent):
-    REQUIRED_KEYS = ['prompt', 'input_prefix']
-
     def run(self):
         temp_prompt = self.context['prompt'] + \
             self._input_prompt() + \
@@ -97,7 +92,7 @@ class Chat(Agent):
         response = self._complete({
             'prompt': temp_prompt,
             'stop': self.context['input_prefix'].strip(),
-        }).rstrip()
+        }).strip()
         self.context['output'] = response
         self.context['prompt'] += self._input_prompt() + self._response_prompt()
         self.context['input'] = None
@@ -117,12 +112,12 @@ class Chat(Agent):
 
     def _input_prompt(self):
         if self.context['input']:
-            return '\n' + self.context['input_prefix'] + self.context['input']
+            return '\n' + self.context['input_prefix'] + self.context['seperator'] + self.context['input']
         else:
             return ''
 
     def _response_prompt(self):
         if self.context['output']:
-            return '\n' + self.context['output_prefix'] + self.context['output']
+            return '\n' + self.context['output_prefix'] + self.context['seperator'] + self.context['output']
         else:
             return ''
