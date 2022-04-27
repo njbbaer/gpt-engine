@@ -112,12 +112,12 @@ class Chat(Agent):
 
     def _input_prompt(self):
         if self.context['input']:
-            return '\n' + self.context['input_prefix'] + self.context['seperator'] + self.context['input']
+            return '\n' + self.context['input_prefix'] + self.context['input']
         else:
             return ''
 
     def _response_prompt(self):
         if self.context['output']:
-            return '\n' + self.context['output_prefix'] + self.context['seperator'] + self.context['output']
+            return '\n' + self.context['output_prefix'] + self.context['output']
         else:
             return ''

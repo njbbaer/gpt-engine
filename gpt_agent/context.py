@@ -9,7 +9,6 @@ class Context:
     DEFAULTS = {
         'engine': 'text-davinci-002',
         'max_tokens': 256,
-        'seperator': ': '
     }
 
     def __init__(self, context):

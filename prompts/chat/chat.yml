@@ -1,6 +1,6 @@
 agent: chat
-output_prefix: 'AI'
-input_prefix: 'Human'
+output_prefix: 'AI: '
+input_prefix: 'Human: '
 prompt: |-
   The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.
 
