@@ -1,6 +1,9 @@
 import openai
 import os
 
+# Loaded to enable input() features
+import readline
+
 from datetime import datetime
 from dotenv import load_dotenv
 from ruamel.yaml import YAML
