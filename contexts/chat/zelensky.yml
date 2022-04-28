@@ -1,0 +1,7 @@
+input_prefix: "\nInterviewer: "
+output_prefix: "\nZelensky: "
+temperature: 1
+frequency_penalty: 0.05
+max_tokens: 128
+prompt: |+
+  The following is the transcript of an interview with Volodymyr Zelensky, president of Ukraine. He is an expert on Ukrainian issues and responds to questions from the interviewer with long and detailed answers.

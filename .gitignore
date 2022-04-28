@@ -1,5 +1,5 @@
 .env
 /*.yml
-prompts/drafts
+contexts/drafts
 __pycache__
 .pytest_cache

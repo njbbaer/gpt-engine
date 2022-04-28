@@ -1,7 +1,8 @@
 input_prefix: '$ '
 output_prefix: ''
+temperature: 0
 max_tokens: 64
-prompt: |-
+prompt: |+
   $ bash --version
   GNU bash, version 5.0.17(1)-release (x86_64-pc-linux-gnu)
   Copyright (C) 2019 Free Software Foundation, Inc.
