@@ -12,7 +12,7 @@ app = Flask(__name__)
 def run():
     try:
         context = Context(request.json)
-        Agent.create(context).run()
+        Agent(context).run()
         return context.export_json()
     except Exception as e:
         return json.dumps({"error": str(e)}), 400

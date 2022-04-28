@@ -1,7 +1,6 @@
 start_text: "\n\nBest Answer:"
 stop: "Question:"
 temperature: 0
+max_tokens: 512
 prompt: |+
   Stack Overflow is a website for professional programmers that features questions and answers on a wide range of topics in computer programming. The following question was answered with a thorough, well-written, and researched response.
-
-  Question:

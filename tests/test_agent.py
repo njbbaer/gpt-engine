@@ -13,45 +13,44 @@ def mock_completion(mocker):
     mocker.patch("builtins.open", mocker.mock_open())
 
 
-def test_agent(mock_completion):
-    context = Context({
-        'prompt': 'foo'
-    })
-    new_context = Agent.create(context).run()
-    assert new_context['prompt'] == 'foo foo'
-
-
-def test_chat(mock_completion):
+def test_agent_1(mock_completion):
     context = Context({
         'agent': 'chat',
+        'prompt': 'bar',
+    })
+    new_context = Agent(context).run()
+    assert new_context['prompt'] == 'barfoo'
+
+
+def test_agent_2(mock_completion):
+    context = Context({
         'prompt': 'A conversation',
-        'input_prefix': 'Human: ',
-        'output_prefix': 'AI: ',
+        'input_prefix': '\nHuman: ',
+        'output_prefix': '\nAI: ',
         'input': 'Hello',
     })
-    new_context = Agent.create(context).run()
+    new_context = Agent(context).run()
     assert new_context['prompt'] == 'A conversation\nHuman: Hello\nAI: foo'
 
 
-def test_chat_bash(mock_completion):
+def test_agent_3(mock_completion):
     context = Context({
-        'agent': 'chat',
         'prompt': 'BASH shell',
-        'input_prefix': '$ ',
-        'output_prefix': '',
+        'input_prefix': '\n$ ',
+        'output_prefix': '\n',
         'input': 'pwd',
     })
-    new_context = Agent.create(context).run()
+    new_context = Agent(context).run()
     assert new_context['prompt'] == 'BASH shell\n$ pwd\nfoo'
 
 
 def test_missing_key():
     with pytest.raises(Exception) as exc_info:
-        Agent.create(Context({})).run()
+        Agent(Context({})).run()
     assert 'missing key' in str(exc_info.value).lower()
 
 
 def test_invalid_key():
     with pytest.raises(Exception) as exc_info:
-        Agent.create(Context({'foo': 'bar'})).run()
+        Agent(Context({'foo': 'bar'})).run()
     assert 'invalid key' in str(exc_info.value).lower()

@@ -1,6 +1,6 @@
-agent: chat
-output_prefix: 'AI: '
-input_prefix: 'Human: '
+input_prefix: "\nHuman: "
+output_prefix: "\nAI: "
+max_tokens: 128
 prompt: |-
   The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.
 
