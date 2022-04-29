@@ -9,31 +9,48 @@ from gpt_agent.context import Context
 @pytest.fixture
 def mock_completion(mocker):
     completion = SimpleNamespace(choices=[SimpleNamespace(text=' foo')])
-    mocker.patch('openai.Completion.create', return_value=completion)
-    mocker.patch("builtins.open", mocker.mock_open())
+    return mocker.patch('openai.Completion.create', return_value=completion)
 
 
-def test_agent_1(mock_completion):
-    context = Context({
-        'agent': 'chat',
-        'prompt': 'bar',
-    })
+def test_agent_basic(mock_completion):
+    context = Context({'prompt': ''})
     new_context = Agent(context).run()
-    assert new_context['prompt'] == 'barfoo'
+    mock_completion.assert_called_with(
+        prompt='',
+        engine='text-davinci-002',
+        stop=[]
+    )
+    assert new_context['prompt'] == 'foo'
 
 
-def test_agent_2(mock_completion):
+def test_agent_basic(mock_completion):
+    context = Context({'prompt': ''})
+    new_context = Agent(context).run()
+    mock_completion.assert_called_with(
+        prompt='',
+        engine='text-davinci-002',
+        stop=[]
+    )
+    assert new_context['prompt'] == 'foo'
+
+
+def test_agent_chat(mock_completion):
     context = Context({
-        'prompt': 'A conversation',
+        'prompt': 'Conversation',
         'input_prefix': '\nHuman: ',
         'output_prefix': '\nAI: ',
         'input': 'Hello',
     })
     new_context = Agent(context).run()
-    assert new_context['prompt'] == 'A conversation\nHuman: Hello\nAI: foo'
+    mock_completion.assert_called_with(
+        prompt='Conversation\nHuman: Hello\nAI:',
+        engine='text-davinci-002',
+        stop=['Human:']
+    )
+    assert new_context['prompt'] == 'Conversation\nHuman: Hello\nAI: foo'
 
 
-def test_agent_3(mock_completion):
+def test_agent_bash(mock_completion):
     context = Context({
         'prompt': 'BASH shell',
         'input_prefix': '\n$ ',
@@ -41,6 +58,11 @@ def test_agent_3(mock_completion):
         'input': 'pwd',
     })
     new_context = Agent(context).run()
+    mock_completion.assert_called_with(
+        prompt='BASH shell\n$ pwd',
+        engine='text-davinci-002',
+        stop=['$']
+    )
     assert new_context['prompt'] == 'BASH shell\n$ pwd\nfoo'
 
 

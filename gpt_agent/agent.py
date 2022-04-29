@@ -30,7 +30,6 @@ class Agent:
         'output_prefix',
         'presence_penalty',
         'prompt',
-        'agent',
         'stop',
         'temperature',
         'top_p',
@@ -44,7 +43,7 @@ class Agent:
         temp_prompt = self.context['prompt'] + \
             self._input_prompt() + \
             self.context['blind_input'] + \
-            self.context['output_prefix']
+            self.context['output_prefix'].rstrip()
         response = self._complete({
             'prompt': temp_prompt,
             'stop': self.context.stop(),
@@ -86,8 +85,9 @@ class Agent:
             'prompt': LiteralScalarString(prompt),
             'output': LiteralScalarString(output),
         }]
-        with open('log.yml', 'a') as f:
-            yaml.dump(entry, f)
+        if 'PYTEST_CURRENT_TEST' not in os.environ:
+            with open('log.yml', 'a') as f:
+                yaml.dump(entry, f)
 
     def _input_prompt(self):
         if self.context['input']:
