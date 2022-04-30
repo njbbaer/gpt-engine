@@ -1,0 +1,23 @@
+.col-form-label {
+  padding-right: 0;
+}
+
+#inputPrompt {
+  white-space: pre-wrap;
+  padding: 10px;
+  min-height: 200px;
+}
+
+#inputPrompt:focus {
+  outline: 0px solid transparent;
+}
+
+#buttonSubmit {
+  width: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  #buttonSubmit {
+    width: 100%;
+  }
+}
