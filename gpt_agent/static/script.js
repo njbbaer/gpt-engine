@@ -3,8 +3,9 @@ function readFields() {
     'prompt': $('#inputPrompt').val(),
     'input': $('#inputInput').val(),
   };
-  input_fields.forEach(field => {
-    const value = $(`#${field.input_id}`).val();
+  $('.inputField').each(function() {
+    const value = $(this).find('input').val();
+    const field = input_fields.find(f => f.key === $(this).attr('name'));
     switch (field.type) {
       case 'string':
         params[field.key] = value;
