@@ -1,0 +1,2 @@
+FLASK_APP=gpt_agent/api
+FLASK_ENV=development
