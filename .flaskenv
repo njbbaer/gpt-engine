@@ -1,2 +1,2 @@
-FLASK_APP=gpt_agent/api
+FLASK_APP=gpt_agent/server
 FLASK_ENV=development

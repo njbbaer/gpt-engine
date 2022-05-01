@@ -1,14 +1,20 @@
 import json
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 from .agent import Agent
 from .context import Context
+from .constants import INPUT_FIELDS
 
 app = Flask(__name__)
 
 
-@app.route("/api/run", methods=["POST"])
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html', input_fields=INPUT_FIELDS)
+
+
+@app.route('/api/run', methods=['POST'])
 def run():
     try:
         context = Context(request.json)
