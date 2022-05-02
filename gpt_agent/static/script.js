@@ -4,9 +4,9 @@ function readFields() {
     'input': $('#inputInput').val(),
   };
   $('.paramField').each(function() {
-    const value = $(this).find('input').val();
+    let value = $(this).find('input').val().replace('\\n', '\n');
     const field = param_fields.find(f => f.field_id === $(this).attr('id'));
-    params[field.key] = value;
+    if (value) params[field.key] = value;
   });
   return params;
 }
@@ -18,7 +18,7 @@ function writeFields(params) {
     const field = param_fields.find(f => f.field_id === $(this).attr('id'));
     const value = params[field.key];
     const inputElement = $(this).find('input')
-    inputElement.val(value || '');
+    inputElement.val(value?.replace('\n', '\\n') || '');
   });
 }
 
