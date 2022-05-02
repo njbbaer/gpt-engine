@@ -14,7 +14,7 @@ def index():
     return render_template('index.html', input_fields=INPUT_FIELDS)
 
 
-@app.route('/api/run', methods=['POST'])
+@app.route('/api', methods=['POST'])
 def run():
     try:
         context = Context(request.json)

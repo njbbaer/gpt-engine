@@ -1,6 +1,6 @@
 function readFields() {
   const params = {
-    'prompt': $('#inputPrompt').val(),
+    'prompt': $('#inputPrompt').text(),
     'input': $('#inputInput').val(),
   };
   $('.inputField').each(function() {
@@ -14,7 +14,10 @@ function readFields() {
         params[field.key] = parseFloat(value);
         break;
       case 'array':
-        params[field.key] = value.split(',');
+        const array = value.split(',');
+        if (!array) {
+          params[field.key] = array;
+        }
         break;
     }
   });
@@ -23,5 +26,15 @@ function readFields() {
 
 $('#buttonSubmit').click(() => {
   const params = readFields();
-  console.log(params);
+  fetch('/api', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
 });

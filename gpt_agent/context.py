@@ -41,12 +41,6 @@ class Context:
     def export_json(self):
         return json.dumps(self.context)
 
-    def stop(self):
-        stop = list(self['stop'])
-        if self['input_prefix']:
-            stop += [self['input_prefix'].strip()]
-        return stop
-
 
 class FileContext(Context):
     def __init__(self, sourcepath):

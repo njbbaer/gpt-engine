@@ -20,7 +20,7 @@ load_dotenv()
 class Agent:
     REQUIRED_KEYS = ['prompt']
     PERMITTED_KEYS = [
-        'blind_input',
+        'blind_prompt',
         'engine',
         'frequency_penalty',
         'input',
@@ -42,11 +42,10 @@ class Agent:
     def run(self):
         temp_prompt = self.context['prompt'] + \
             self._input_prompt() + \
-            self.context['blind_input'] + \
+            self.context['blind_prompt'] + \
             self.context['output_prefix'].rstrip()
         response = self._complete({
             'prompt': temp_prompt,
-            'stop': self.context.stop(),
         }).strip()
         self.context['output'] = response
         self.context['prompt'] += self._input_prompt() + self._output_prompt()

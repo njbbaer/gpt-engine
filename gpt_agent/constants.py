@@ -5,8 +5,8 @@ INPUT_FIELDS = [
     'type': 'float',
   },
   {
-    'key': 'stop_text',
-    'label': 'Stop Text',
+    'key': 'stop',
+    'label': 'Stop Sequences',
     'type': 'array',
   },
   {
