@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="static/style.css">
     <title>GPT Agent</title>
     <script type="text/javascript">
-      var input_fields = JSON.parse('{{ input_fields | tojson }}')
+      var param_fields = JSON.parse('{{ param_fields | tojson }}')
     </script>
   </head>
   <body>
@@ -21,8 +21,8 @@
         </p>
         <div class="collapse" id="collapseParameters">
           <div class="card card-body">
-            {% for field in input_fields %}
-              <div class="inputField row mt-2 mb-2" name="{{ field.key }}">
+            {% for field in param_fields %}
+              <div class="paramField row mt-2 mb-2" id="{{ field.field_id }}">
                 <label class="col-12 col-md-3 col-lg-2 col-form-label">{{ field.label }}</label>
                 <div class="col-12 col-md-9 col-lg-10">
                   <input class="form-control">

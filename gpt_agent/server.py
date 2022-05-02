@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', input_fields=INPUT_FIELDS)
+    return render_template('index.html', param_fields=INPUT_FIELDS)
 
 
 @app.route('/api', methods=['POST'])
