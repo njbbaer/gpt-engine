@@ -36,6 +36,8 @@ class Context:
     def gpt_params(self):
         keys = ['prompt', 'engine', 'temperature', 'top_p', 'max_tokens', 'stop', 'suffix', 'presence_penalty', 'frequency_penalty']
         params = {k: v for k, v in self.context.items() if k in keys}
+        if isinstance(params['temperature'], str):
+            params['temperature'] = float(params['temperature'])
         return {**self.DEFAULTS, **params}
 
     def export_json(self):
