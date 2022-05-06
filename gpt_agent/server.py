@@ -1,10 +1,14 @@
 import json
+import openai
+import os
 
 from flask import Flask, request, render_template
 
 from .agent import Agent
 from .context import Context
 from .constants import INPUT_FIELDS
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 app = Flask(__name__)
 
@@ -17,8 +21,6 @@ def index():
 @app.route('/api', methods=['POST'])
 def run():
     try:
-        context = Context(request.json)
-        Agent(context).run()
-        return context.export_json()
+        return openai.Completion.create(**request.json)
     except Exception as e:
         return json.dumps({"error": str(e)}), 400

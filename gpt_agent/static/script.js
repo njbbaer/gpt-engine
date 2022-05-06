@@ -1,40 +1,54 @@
-function readFields() {
-  const params = {
-    'prompt': $('#inputPrompt').text(),
-    'input': $('#inputInput').val(),
-  };
-  $('.paramField').each(function() {
-    let value = $(this).find('input').val().replace('\\n', '\n');
-    const field = param_fields.find(f => f.field_id === $(this).attr('id'));
-    if (value) params[field.key] = value;
+// Submit an API request
+$('#submitButton').click(() => {
+  const request_body = JSON.stringify({
+    'engine': 'text-davinci-002',
+    'prompt': $('#promptField').text(),
   });
-  return params;
-}
-
-function writeFields(params) {
-  $('#inputPrompt').text(params.prompt);
-  $('#inputInput').val(params.input);
-  $('.paramField').each(function() {
-    const field = param_fields.find(f => f.field_id === $(this).attr('id'));
-    const value = params[field.key];
-    const inputElement = $(this).find('input')
-    inputElement.val(value?.replace('\n', '\\n') || '');
-  });
-}
-
-$('#buttonSubmit').click(() => {
-  const params = readFields();
-  console.log('Request:', params);
+  console.log('Request:', request_body);
   fetch('/api', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(params),
+    body: request_body,
   })
-  .then(response => response.json())
+  .then(response => {
+    if (response.ok) {
+      return response.json()
+    } else {
+      return Promise.reject(response);
+    }
+  })
   .then(data => {
-    console.log('Response:', data);
-    writeFields(data);
+    $('#promptField').text($('#promptField').text() + data.choices[0].text);
   })
+  .catch(response => {
+    response.json().then((json) => {
+      flashError(json['error']);
+    })
+  });
 });
+
+// Toggle the visibility of a field
+$('.toggleField').bind('click initialize', event => {
+  const toggleField = $(event.currentTarget);
+  const paramField = $(`.paramField[name="${toggleField.attr('name')}"]`);
+  if (toggleField.hasClass('active')) {
+    toggleField.addClass('bg-secondary text-white border-white');
+    toggleField.removeClass('bg-white text-secondary border-secondary');
+    paramField.slideDown()
+  } else {
+    toggleField.addClass('bg-white text-secondary border-secondary');
+    toggleField.removeClass('bg-secondary text-white border-white');
+    paramField.slideUp();
+  }
+}).trigger('initialize');
+
+// Flash an error message
+const flashError = (message) => {
+  const alert = $('.alert');
+  alert.text(message);
+  alert.slideDown(() => {
+    setTimeout(() => alert.slideUp(), 5000);
+  });
+}

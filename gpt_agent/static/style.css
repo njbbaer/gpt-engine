@@ -2,22 +2,36 @@
   padding-right: 0;
 }
 
-#inputPrompt {
+.alert {
+  display: none;
+}
+
+.paramField {
+  display: none;
+}
+
+#promptField {
   white-space: pre-wrap;
   padding: 10px;
   min-height: 200px;
 }
 
-#inputPrompt:focus {
+#promptField:focus {
   outline: 0px solid transparent;
 }
 
-#buttonSubmit {
+#submitButton {
   width: 200px;
 }
 
 @media screen and (max-width: 768px) {
-  #buttonSubmit {
+  #submitButton {
     width: 100%;
   }
+}
+
+#fieldsFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
 }
