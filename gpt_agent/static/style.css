@@ -21,11 +21,19 @@
 }
 
 #submitButton {
-  width: 200px;
+  width: 10rem;
+}
+
+#settingsButton {
+  width: 10rem;
 }
 
 @media screen and (max-width: 768px) {
   #submitButton {
+    width: 100%;
+  }
+
+  #settingsButton {
     width: 100%;
   }
 }
