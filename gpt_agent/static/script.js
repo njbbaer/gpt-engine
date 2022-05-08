@@ -1,12 +1,14 @@
 let lastPrompt = '';
+let lastInput = '';
 
 // Submit an API request
 $('#submitButton').click(() => {
+  lastPrompt = $('#promptField').text();
+  lastInput = $('#inputField').val();
   const request_body = getRequestBody();
   appendPrompt(getFieldValue('input_prefix'));
   appendPrompt($('#inputField').val());
   $('#inputField').val('');
-  lastPrompt = request_body['prompt'];
   fetch('/api', {
     method: 'POST',
     headers: {
@@ -34,6 +36,7 @@ $('#submitButton').click(() => {
 
 $('#undoButton').click(() => {
   $('#promptField').text(lastPrompt);
+  $('#inputField').val(lastInput);
 });
 
 // Toggle the visibility of a field
