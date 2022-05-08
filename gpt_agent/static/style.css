@@ -41,5 +41,5 @@
 #fieldsFlexBox {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5em;
+  gap: 0.5rem;
 }

@@ -11,46 +11,42 @@
     </script>
   </head>
   <body>
-    <div class="container mt-3">
+    <div class="container mt-3 d-grid gap-3">
       <div class="alert alert-danger" role="alert"></div>
       <h1>GPT Agent</h1>
-      <form class="mt-3">
-        <p>
-          <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
-            Settings
-          </button>
-        </p>
-        <div class="collapse" id="settings">
-          <div class="card card-body">
-            <div id="fieldsFlexBox">
-              {% for field in param_fields %}
-                <button class="toggleField btn btn-sm bg-white text-secondary border-secondary" type="button" data-bs-toggle="button" name="{{ field.key }}">
-                  {{ field.label }}
-                </button>
-              {% endfor %}
-            </div>
+      <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
+        Settings
+      </button>
+      <div class="collapse" id="settings">
+        <div class="card card-body">
+          <div id="fieldsFlexBox">
             {% for field in param_fields %}
-              <div class="paramField row mt-2" name="{{ field.key }}">
-                <label class="col-12 col-md-3 col-lg-2 col-form-label">
-                  {{ field.label }}
-                </label>
-                <div class="col-12">
-                  <input class="form-control">
-                </div>
-              </div>
+              <button class="toggleField btn btn-sm bg-white text-secondary border-secondary" type="button" data-bs-toggle="button" name="{{ field.key }}">
+                {{ field.label }}
+              </button>
             {% endfor %}
           </div>
+          {% for field in param_fields %}
+            <div class="paramField row mt-2" name="{{ field.key }}">
+              <label class="col-12 col-md-3 col-lg-2 col-form-label">
+                {{ field.label }}
+              </label>
+              <div class="col-12">
+                <input class="form-control">
+              </div>
+            </div>
+          {% endfor %}
         </div>
-      </form>
-      <div class="card mt-3">
+      </div>
+      <div class="card">
         <div id="promptField" class="card-body" contenteditable="plaintext-only"></div>
       </div>
-      <input id="inputField" type="text" class="form-control mt-3">
-      <div class="d-flex mt-3">
+      <input id="inputField" type="text" class="form-control">
+      <div class="d-flex">
         <button id="submitButton" class="btn btn-lg btn-primary">Submit</button>
         <button id="undoButton" class="btn btn-lg btn-outline-primary ms-3">Undo</button>
       </div>
-      <h4 class="mt-3"><span id="costEstimate"></span></h4>
+      <h4><span id="costEstimate"></span></h4>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
