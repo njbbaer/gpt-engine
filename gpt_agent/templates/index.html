@@ -15,28 +15,30 @@
       <div class="alert alert-danger" role="alert"></div>
       <h1>GPT Agent</h1>
       <div class="d-flex gap-2">
-        <div class="input-group" style="width: 16rem">
-          <select class="form-select">
-            <option selected>Choose a template</option>
-            <option value="chat">Chat</option>
-          </select>
-          <button class="btn btn-outline-secondary" type="button">Save</button>
+        <div class="input-group" id="template-input-group">
+          <button class="form-select flex-grow-1 text-nowrap" type="button" id="template-button" data-bs-toggle="dropdown">
+            Select a template
+          </button>
+          <ul class="dropdown-menu" id="template-select">
+            <li><a class="dropdown-item">Chat</a></li>
+          </ul>
+          <button class="btn btn-outline-secondary" type="button" disabled>Save</button>
         </div>
-        <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
+        <button id="settings-button" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
           Settings
         </button>
       </div>
       <div class="collapse" id="settings">
         <div class="card card-body">
-          <div id="fieldsFlexBox">
+          <div id="fields-flexbox">
             {% for field in param_fields %}
-              <button class="toggleField btn btn-sm bg-white text-secondary border-secondary" type="button" data-bs-toggle="button" name="{{ field.key }}">
+              <button class="toggle-field btn btn-sm bg-white text-secondary border-secondary" type="button" data-bs-toggle="button" name="{{ field.key }}">
                 {{ field.label }}
               </button>
             {% endfor %}
           </div>
           {% for field in param_fields %}
-            <div class="paramField row mt-2" name="{{ field.key }}">
+            <div class="param-field row mt-2" name="{{ field.key }}">
               <label class="col-12 col-md-3 col-lg-2 col-form-label">
                 {{ field.label }}
               </label>
@@ -48,14 +50,13 @@
         </div>
       </div>
       <div class="card">
-        <div id="promptField" class="card-body" contenteditable="plaintext-only"></div>
+        <div id="prompt-field" class="card-body" contenteditable="plaintext-only"></div>
       </div>
-      <input id="inputField" type="text" class="form-control">
+      <input id="input-field" type="text" class="form-control">
       <div class="d-flex gap-2">
-        <button id="submitButton" class="btn btn-lg btn-primary">Submit</button>
-        <button id="undoButton" class="btn btn-lg btn-outline-primary">Undo</button>
+        <button id="submit-button" class="btn btn-lg btn-primary">Submit</button>
+        <button id="undo-button" class="btn btn-lg btn-outline-primary">Undo</button>
       </div>
-      <h4><span id="costEstimate"></span></h4>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

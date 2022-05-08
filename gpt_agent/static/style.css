@@ -6,40 +6,40 @@
   display: none;
 }
 
-.paramField {
+.param-field {
   display: none;
 }
 
-#promptField {
+#prompt-field {
   white-space: pre-wrap;
   padding: 10px;
   min-height: 200px;
 }
 
-#promptField:focus {
+#prompt-field:focus {
   outline: 0px solid transparent;
 }
 
-#submitButton {
+#submit-button {
   width: 10rem;
 }
 
-#settingsButton {
-  width: 10rem;
+#template-input-group {
+  width: 18rem;
 }
 
-@media screen and (max-width: 768px) {
-  #submitButton {
+@media screen and (max-width: 576px) {
+  #submit-button {
     width: 100%;
   }
 
-  #settingsButton {
+  #settings-button {
     width: auto;
     flex-grow: 1;
   }
 }
 
-#fieldsFlexBox {
+#fields-flexbox {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;

@@ -2,13 +2,13 @@ let lastPrompt = '';
 let lastInput = '';
 
 // Submit an API request
-$('#submitButton').click(() => {
-  lastPrompt = $('#promptField').text();
-  lastInput = $('#inputField').val();
+$('#submit-button').click(() => {
+  lastPrompt = $('#prompt-field').text();
+  lastInput = $('#input-field').val();
   const request_body = getRequestBody();
   appendPrompt(getFieldValue('input_prefix'));
-  appendPrompt($('#inputField').val());
-  $('#inputField').val('');
+  appendPrompt($('#input-field').val());
+  $('#input-field').val('');
   fetch('/api', {
     method: 'POST',
     headers: {
@@ -34,22 +34,30 @@ $('#submitButton').click(() => {
   });
 });
 
-$('#undoButton').click(() => {
-  $('#promptField').text(lastPrompt);
-  $('#inputField').val(lastInput);
+$('#undo-button').click(() => {
+  $('#prompt-field').text(lastPrompt);
+  $('#input-field').val(lastInput);
 });
 
 // Toggle the visibility of a field
-$('.toggleField').bind('click initialize', event => {
+$('.toggle-field').bind('click initialize', event => {
   const button = $(event.currentTarget);
-  const paramField = $(`.paramField[name="${button.attr('name')}"]`);
+  const paramField = $(`.param-field[name="${button.attr('name')}"]`);
   toggleField(button, paramField)
 })
 
 // Toggle the visibility of settings
-$('#settingsButton').bind('click initialize', event => {
+$('#settings-button').bind('click initialize', event => {
   toggleField($(event.currentTarget), $(`#settings`));
 })
+
+// Set the current template
+$('#template-select a').click(event => {
+  console.log('test')
+  const selectedTemplate = $(event.currentTarget).text();
+  $('#template-button').text(selectedTemplate);
+});
+
 
 const flashError = (message) => {
   const alert = $('.alert');
@@ -62,22 +70,22 @@ const flashError = (message) => {
 const getRequestBody = () => {
   const requestBody = {
     'engine': getFieldValue('engine') || 'text-davinci-002',
-    'prompt': $('#promptField').text(),
+    'prompt': $('#prompt-field').text(),
     'max_tokens': parseInt(getFieldValue('max_tokens')),
     'temperature': parseFloat(getFieldValue('temperature')),
     'stop': (getFieldValue('stop') || null)?.split(','),
   };
-  requestBody['prompt'] += getFieldValue('input_prefix') + $('#inputField').val() + getFieldValue('output_prefix');
+  requestBody['prompt'] += getFieldValue('input_prefix') + $('#input-field').val() + getFieldValue('output_prefix');
   return requestBody
 }
 
 const appendPrompt = (text) => {
-  $('#promptField').text($('#promptField').text() + text);
+  $('#prompt-field').text($('#prompt-field').text() + text);
 }
 
 const getFieldValue = (key) => {
-  if ($(`.toggleField[name=${key}]`).hasClass('active')) {
-    return $(`.paramField[name=${key}]`).find('input').val().replace('\\n', '\n');
+  if ($(`.toggle-field[name=${key}]`).hasClass('active')) {
+    return $(`.param-field[name=${key}]`).find('input').val().replace('\\n', '\n');
   } else {
     return '';
   }
