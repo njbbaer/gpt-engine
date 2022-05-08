@@ -30,20 +30,16 @@ $('#submitButton').click(() => {
 
 // Toggle the visibility of a field
 $('.toggleField').bind('click initialize', event => {
-  const toggleField = $(event.currentTarget);
-  const paramField = $(`.paramField[name="${toggleField.attr('name')}"]`);
-  if (toggleField.hasClass('active')) {
-    toggleField.addClass('bg-secondary text-white border-white');
-    toggleField.removeClass('bg-white text-secondary border-secondary');
-    paramField.slideDown()
-  } else {
-    toggleField.addClass('bg-white text-secondary border-secondary');
-    toggleField.removeClass('bg-secondary text-white border-white');
-    paramField.slideUp();
-  }
-}).trigger('initialize');
+  const button = $(event.currentTarget);
+  const paramField = $(`.paramField[name="${button.attr('name')}"]`);
+  toggleField(button, paramField)
+})
 
-// Flash an error message
+// Toggle the visibility of settings
+$('#settingsButton').bind('click initialize', event => {
+  toggleField($(event.currentTarget), $(`#settings`));
+})
+
 const flashError = (message) => {
   const alert = $('.alert');
   alert.text(message);
@@ -54,7 +50,7 @@ const flashError = (message) => {
 
 const getRequestBody = () => {
   const request_body = {
-    'engine': 'text-davinci-002',
+    'engine': getFieldValue('engine') || 'text-davinci-002',
     'prompt': $('#promptField').text(),
   };
   request_body['temperature'] = parseFloat(getFieldValue('temperature'))
@@ -71,5 +67,17 @@ const getFieldValue = (key) => {
     return $(`.paramField[name=${key}]`).find('input').val().replace('\\n', '\n');
   } else {
     return '';
+  }
+}
+
+const toggleField = (button, field) => {
+  if (button.hasClass('active')) {
+    button.addClass('bg-secondary text-white border-white');
+    button.removeClass('bg-white text-secondary border-secondary');
+    field.slideDown();
+  } else {
+    button.addClass('bg-white text-secondary border-secondary');
+    button.removeClass('bg-secondary text-white border-white');
+    field.slideUp();
   }
 }

@@ -16,15 +16,15 @@
       <h1>GPT Agent</h1>
       <form class="mt-3">
         <p>
-          <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSettings" id="settingsButton">
+          <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
             Settings
           </button>
         </p>
-        <div class="collapse" id="collapseSettings">
+        <div class="collapse" id="settings">
           <div class="card card-body">
             <div id="fieldsFlexBox">
               {% for field in param_fields %}
-                <button class="toggleField btn btn-sm" type="button" data-bs-toggle="button" name="{{ field.key }}">
+                <button class="toggleField btn btn-sm bg-white text-secondary border-secondary" type="button" data-bs-toggle="button" name="{{ field.key }}">
                   {{ field.label }}
                 </button>
               {% endfor %}
