@@ -1,5 +1,13 @@
 INPUT_FIELDS = [
   {
+    'key': 'engine',
+    'label': 'Engine',
+  },
+  {
+    'key': 'max_tokens',
+    'label': 'Max Tokens',
+  },
+  {
     'key': 'temperature',
     'label': 'Temperature',
   },
@@ -14,9 +22,5 @@ INPUT_FIELDS = [
   {
     'key': 'output_prefix',
     'label': 'Output Prefix',
-  },
-  {
-    'key': 'blind_prompt',
-    'label': 'Blind Prompt',
   },
 ]

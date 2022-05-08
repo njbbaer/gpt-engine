@@ -52,6 +52,7 @@ const getRequestBody = () => {
   const request_body = {
     'engine': getFieldValue('engine') || 'text-davinci-002',
     'prompt': $('#promptField').text(),
+    'max_tokens': parseInt(getFieldValue('max_tokens')),
   };
   request_body['temperature'] = parseFloat(getFieldValue('temperature'))
   request_body['prompt'] += getFieldValue('input_prefix') + $('#inputField').val() + getFieldValue('output_prefix');
