@@ -49,14 +49,15 @@ const flashError = (message) => {
 }
 
 const getRequestBody = () => {
-  const request_body = {
+  const requestBody = {
     'engine': getFieldValue('engine') || 'text-davinci-002',
     'prompt': $('#promptField').text(),
     'max_tokens': parseInt(getFieldValue('max_tokens')),
+    'temperature': parseFloat(getFieldValue('temperature')),
+    'stop': (getFieldValue('stop') || null)?.split(','),
   };
-  request_body['temperature'] = parseFloat(getFieldValue('temperature'))
-  request_body['prompt'] += getFieldValue('input_prefix') + $('#inputField').val() + getFieldValue('output_prefix');
-  return request_body
+  requestBody['prompt'] += getFieldValue('input_prefix') + $('#inputField').val() + getFieldValue('output_prefix');
+  return requestBody
 }
 
 const appendPrompt = (text) => {
