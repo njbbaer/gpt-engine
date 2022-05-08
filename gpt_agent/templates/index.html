@@ -14,9 +14,18 @@
     <div class="container mt-3 d-grid gap-3">
       <div class="alert alert-danger" role="alert"></div>
       <h1>GPT Agent</h1>
-      <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
-        Settings
-      </button>
+      <div class="d-flex gap-2">
+        <div class="input-group" style="width: 16rem">
+          <select class="form-select">
+            <option selected>Choose a template</option>
+            <option value="chat">Chat</option>
+          </select>
+          <button class="btn btn-outline-secondary" type="button">Save</button>
+        </div>
+        <button id="settingsButton" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
+          Settings
+        </button>
+      </div>
       <div class="collapse" id="settings">
         <div class="card card-body">
           <div id="fieldsFlexBox">
@@ -42,9 +51,9 @@
         <div id="promptField" class="card-body" contenteditable="plaintext-only"></div>
       </div>
       <input id="inputField" type="text" class="form-control">
-      <div class="d-flex">
+      <div class="d-flex gap-2">
         <button id="submitButton" class="btn btn-lg btn-primary">Submit</button>
-        <button id="undoButton" class="btn btn-lg btn-outline-primary ms-3">Undo</button>
+        <button id="undoButton" class="btn btn-lg btn-outline-primary">Undo</button>
       </div>
       <h4><span id="costEstimate"></span></h4>
     </div>

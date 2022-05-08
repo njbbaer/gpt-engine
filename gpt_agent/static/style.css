@@ -34,7 +34,8 @@
   }
 
   #settingsButton {
-    width: 100%;
+    width: auto;
+    flex-grow: 1;
   }
 }
 
