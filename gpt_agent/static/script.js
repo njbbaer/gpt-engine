@@ -86,7 +86,7 @@ const appendPrompt = (text) => {
 
 const getFieldValue = (key) => {
   if ($(`.toggle-field[name=${key}]`).hasClass('active')) {
-    return $(`.param-field[name=${key}]`).find('input').val().replace('\\n', '\n');
+    return $(`.param-field[name=${key}]`).find('input').val().replace(/\\n/g, '\n');
   } else {
     return '';
   }
@@ -113,7 +113,7 @@ const applyTemplate = (name) => {
     const toggleField = $(`.toggle-field[name=${field.key}]`);
     const paramField = $(`.param-field[name=${field.key}]`);
     paramField.find('input').val(value);
-    if (value) {
+    if (value != null) {
       toggleField.addClass('active')
     } else {
       toggleField.removeClass('active')
