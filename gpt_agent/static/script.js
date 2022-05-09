@@ -34,28 +34,29 @@ $('#submit-button').click(() => {
   });
 });
 
+// Undo the response from the last API request
 $('#undo-button').click(() => {
   $('#prompt-field').text(lastPrompt);
   $('#input-field').val(lastInput);
 });
 
 // Toggle the visibility of a field
-$('.toggle-field').bind('click initialize', event => {
+$('.toggle-field').bind('click', event => {
   const button = $(event.currentTarget);
   const paramField = $(`.param-field[name="${button.attr('name')}"]`);
-  toggleField(button, paramField)
+  updateToggledField(button, paramField)
 })
 
-// Toggle the visibility of settings
-$('#settings-button').bind('click initialize', event => {
-  toggleField($(event.currentTarget), $(`#settings`));
+// Toggle the visibility of modify
+$('#modify-button').bind('click', event => {
+  updateToggledField($(event.currentTarget), $(`#modify`));
 })
 
 // Set the current template
 $('#template-select a').click(event => {
-  console.log('test')
   const selectedTemplate = $(event.currentTarget).text();
   $('#template-button').text(selectedTemplate);
+  applyTemplate(selectedTemplate)
 });
 
 
@@ -91,7 +92,7 @@ const getFieldValue = (key) => {
   }
 }
 
-const toggleField = (button, field) => {
+const updateToggledField = (button, field) => {
   if (button.hasClass('active')) {
     button.addClass('bg-secondary text-white border-white');
     button.removeClass('bg-white text-secondary border-secondary');
@@ -101,4 +102,22 @@ const toggleField = (button, field) => {
     button.removeClass('bg-secondary text-white border-white');
     field.slideUp();
   }
+}
+
+const applyTemplate = (name) => {
+  const template = templates[name];
+  $('#prompt-field').text(template.prompt);
+  $('#input-field').val(template.input);
+  paramFields.forEach(field => {
+    const value = template[field.key];
+    const toggleField = $(`.toggle-field[name=${field.key}]`);
+    const paramField = $(`.param-field[name=${field.key}]`);
+    paramField.find('input').val(value);
+    if (value) {
+      toggleField.addClass('active')
+    } else {
+      toggleField.removeClass('active')
+    }
+    updateToggledField(toggleField, paramField);
+  });
 }

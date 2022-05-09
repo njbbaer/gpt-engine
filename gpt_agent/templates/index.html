@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="static/style.css">
     <title>GPT Agent</title>
     <script type="text/javascript">
-      var param_fields = JSON.parse('{{ param_fields | tojson }}')
+      const paramFields = JSON.parse('{{ param_fields | tojson }}')
+      const templates = JSON.parse('{{ templates | tojson }}')
     </script>
   </head>
   <body>
@@ -24,11 +25,11 @@
           </ul>
           <button class="btn btn-outline-secondary" type="button" disabled>Save</button>
         </div>
-        <button id="settings-button" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
-          Settings
+        <button id="modify-button" class="btn bg-white text-secondary border-secondary" type="button" data-bs-toggle="button">
+          Modify
         </button>
       </div>
-      <div class="collapse" id="settings">
+      <div class="collapse" id="modify">
         <div class="card card-body">
           <div id="fields-flexbox">
             {% for field in param_fields %}
@@ -50,7 +51,7 @@
         </div>
       </div>
       <div class="card">
-        <div id="prompt-field" class="card-body" contenteditable="plaintext-only"></div>
+        <div id="prompt-field" class="card-body" contentmodifyable="plaintext-only"></div>
       </div>
       <input id="input-field" type="text" class="form-control">
       <div class="d-flex gap-2">

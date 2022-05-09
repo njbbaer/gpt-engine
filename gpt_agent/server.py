@@ -6,7 +6,7 @@ from flask import Flask, request, render_template
 
 from .agent import Agent
 from .context import Context
-from .constants import INPUT_FIELDS
+from .constants import INPUT_FIELDS, TEMPLATES
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', param_fields=INPUT_FIELDS)
+    return render_template('index.html', param_fields=INPUT_FIELDS, templates=TEMPLATES)
 
 
 @app.route('/api', methods=['POST'])

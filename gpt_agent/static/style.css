@@ -33,7 +33,7 @@
     width: 100%;
   }
 
-  #settings-button {
+  #modify-button {
     width: auto;
     flex-grow: 1;
   }
