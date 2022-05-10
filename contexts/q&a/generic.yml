@@ -1,6 +1,0 @@
-input_prefix: "\n\nQuestion:\n"
-output_prefix: "\n\nAnswer:\n"
-temperature: 0
-max_tokens: 512
-prompt: |+
-  The following question was answered with a thorough, well-written, and researched response.

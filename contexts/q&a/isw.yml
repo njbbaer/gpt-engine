@@ -1,6 +1,0 @@
-input_prefix: "\n\nQuestion:\n"
-output_prefix: "\n\nAnswer:\n"
-temperature: 0
-max_tokens: 512
-prompt: |+
-  The Institute for the Study of War (ISW) is a think tank, providing research and analysis regarding issues of defense and foreign affairs. It focuses on military operations, enemy threats, and political trends in diverse conflict zones. The following question was answered by ISW with a thorough, well-written, and researched response.

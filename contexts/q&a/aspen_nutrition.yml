@@ -1,6 +1,0 @@
-input_prefix: "\n\nQuestion:\n"
-output_prefix: "\n\nAnswer:\n"
-temperature: 0
-max_tokens: 512
-prompt: |+
-  The American Society of Enteral and Parenteral Nutrition (ASPEN) is a professional organization leading the science and practice of clinical nutrition. The following question was answered by ASPEN with a thorough, well-written, and researched response:
