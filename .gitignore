@@ -1,5 +1,2 @@
 .env
-/*.yml
-contexts/drafts
 __pycache__
-.pytest_cache
