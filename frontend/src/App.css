@@ -1,0 +1,9 @@
+#generate-button {
+  width: 10rem;
+}
+
+@media screen and (max-width: 576px) {
+  #generate-button {
+    width: 100%;
+  }
+}

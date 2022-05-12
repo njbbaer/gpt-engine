@@ -1,18 +1,31 @@
-import Nav from 'react-bootstrap/Nav';
+import React from "react";
+import "./App.css";
 
-import './App.css';
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {textarea: ''};
+  }
 
-function App() {
-  return (
-    <Nav className="navbar navbar-light bg-light">
-      <div className="container" style= {{ justifyContent: 'space-between' }}>
-        <div className="navbar-brand">
-          GPT Agent
+  handleChangeTextarea = (event) => {
+    this.setState({textarea: event.target.value});
+  }
+
+  render() {
+    return (
+      <div className="container d-grid gap-3 mt-3">
+        <textarea
+          className="form-control"
+          rows="10"
+          value={this.state.value}
+          onChange={this.handleChangeTextarea}
+        />
+        <div className="d-flex gap-2 mb-3">
+          <button id="generate-button" className="btn btn-lg btn-primary">Generate</button>
         </div>
-        <a href="https://github.com/njbbaer/gpt-agent">GitHub</a>
       </div>
-    </Nav>
-  );
+    );
+  }
 }
 
 export default App;
