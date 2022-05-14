@@ -2,8 +2,16 @@
   width: 10rem;
 }
 
+#template-dropdown {
+  text-align: left;
+}
+
 @media screen and (max-width: 576px) {
   #generate-button {
+    width: 100%;
+  }
+
+  #template-dropdown {
     width: 100%;
   }
 }
