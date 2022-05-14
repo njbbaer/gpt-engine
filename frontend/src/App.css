@@ -3,7 +3,7 @@
 }
 
 #template-dropdown {
-  text-align: left;
+  min-width: 10rem;
 }
 
 @media screen and (max-width: 576px) {
