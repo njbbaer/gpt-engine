@@ -1,5 +1,7 @@
-import React from "react";
 import "./App.css";
+
+import React from "react";
+import TextareaAutosize from 'react-textarea-autosize';
 
 class App extends React.Component {
   constructor(props) {
@@ -43,13 +45,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="container d-grid gap-3 mt-3">
-        <textarea
+        <TextareaAutosize
           className="form-control"
-          rows="10"
+          minRows="8"
+          style={{ resize: 'none' }}
           value={this.state.textarea}
           onChange={this.handleChangeTextarea}
         />
-        <div className="d-flex gap-2 mb-3">
+        <div className="input-bar d-flex gap-2 mb-3">
           <button 
             id="generate-button"
             className="btn btn-lg btn-primary"
