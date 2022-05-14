@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
+import Alert from "./Alert";
 
 class App extends React.Component {
   constructor(props) {
@@ -51,14 +52,18 @@ class App extends React.Component {
     })
     .catch(response => {
       response.json().then((json) => {
-        console.error(json['error']);
+        this.setState({alertText: json.error.message});
       })
+      setTimeout(() => {
+        this.setState({alertText: ''});
+      }, 5000);
     });
   }
 
   render() {
     return (
       <div className="container d-grid gap-3 mt-3">
+        <Alert>{this.state.alertText}</Alert>
         <Form.Group>
           <Form.Label>API Key</Form.Label>
           <Form.Control
