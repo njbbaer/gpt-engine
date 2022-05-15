@@ -2,10 +2,11 @@ import "./App.css";
 
 import React from "react";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
+
+import SelectTemplate from "./SelectTemplate";
 
 class App extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends React.Component {
       },
       body: JSON.stringify({
         prompt: this.state.textarea,
+        max_tokens: 128,
       })
     })
     .then(response => {
@@ -78,16 +80,10 @@ class App extends React.Component {
         </Form.Group>
         <Form.Group>
           <Form.Label>Template</Form.Label>
-          <Dropdown onSelect={this.handleSelectTemplate}>
-            <Dropdown.Toggle variant="outline-secondary" id="template-dropdown">
-              {this.state.selectedTemplate || "Select a template"}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>Chat</Dropdown.Item>
-              <Dropdown.Item>Stack Overflow</Dropdown.Item>
-              <Dropdown.Item>This is a Very Long Prompt Name</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <SelectTemplate
+            selectedTemplate={this.state.selectedTemplate}
+            handleSelectTemplate={this.handleSelectTemplate}
+          />
         </Form.Group>
         <Form.Group>
           <Form.Label>Prompt</Form.Label>
