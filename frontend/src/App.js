@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       textarea: '',
-      apiKey: '',
+      apiKey: localStorage.getItem('apiKey') || '',
     };
   }
 
@@ -21,7 +21,9 @@ class App extends React.Component {
   }
 
   handleChangeApiKey = (event) => {
-    this.setState({apiKey: event.target.value});
+    const apiKey = event.target.value;
+    this.setState({apiKey: apiKey});
+    localStorage.setItem('apiKey', apiKey);
   }
 
   handleSelectTemplate = (_, event) => {
