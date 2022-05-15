@@ -78,13 +78,14 @@ class App extends React.Component {
         </Form.Group>
         <Form.Group>
           <Form.Label>Template</Form.Label>
-          <Dropdown id="template-dropdown" onSelect={this.handleSelectTemplate}>
+          <Dropdown onSelect={this.handleSelectTemplate}>
             <Dropdown.Toggle variant="outline-secondary" id="template-dropdown">
               {this.state.selectedTemplate || "Select a template"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item>Chat</Dropdown.Item>
               <Dropdown.Item>Stack Overflow</Dropdown.Item>
+              <Dropdown.Item>This is a Very Long Prompt Name</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Form.Group>
@@ -97,13 +98,11 @@ class App extends React.Component {
             onChange={this.handleChangeTextarea}
           />
         </Form.Group>
-        <div className="d-flex gap-2 mb-3">
-          <Button 
-            id="generate-button"
-            className="btn btn-lg btn-primary"
-            onClick={this.handleGenerate}
-          >Generate</Button>
-        </div>
+        <Button
+          id="generate-button"
+          className="btn btn-lg btn-primary"
+          onClick={this.handleGenerate}
+        >Generate</Button>
       </div>
     );
   }

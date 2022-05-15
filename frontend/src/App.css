@@ -1,17 +1,7 @@
 #generate-button {
-  width: 10rem;
+  width: 12rem;
 }
 
 #template-dropdown {
-  min-width: 10rem;
-}
-
-@media screen and (max-width: 576px) {
-  #generate-button {
-    width: 100%;
-  }
-
-  #template-dropdown {
-    width: 100%;
-  }
+  min-width: 12rem;
 }
