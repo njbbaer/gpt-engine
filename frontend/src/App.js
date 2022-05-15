@@ -94,6 +94,7 @@ class App extends React.Component {
           <TextareaAutosize
             className="form-control"
             style={{ resize: "none" }}
+            minRows="4"
             value={this.state.textarea}
             onChange={this.handleChangeTextarea}
           />
