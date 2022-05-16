@@ -7,6 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
 
 import SelectTemplate from "./SelectTemplate";
+import prompts from "./prompts";
 
 class App extends React.Component {
   constructor(props) {
@@ -27,8 +28,11 @@ class App extends React.Component {
     localStorage.setItem('apiKey', apiKey);
   }
 
-  handleSelectTemplate = (_, event) => {
-    this.setState({selectedTemplate: event.target.text});
+  handleSelectTemplate = (key, event) => {
+    this.setState({
+      selectedTemplate: event.target.text,
+      textarea: prompts[key].prompt,
+    });
   }
 
   handleGenerate = () => {
@@ -41,6 +45,7 @@ class App extends React.Component {
       body: JSON.stringify({
         prompt: this.state.textarea,
         max_tokens: 128,
+        frequency_penalty: 0.5,
       })
     })
     .then(response => {

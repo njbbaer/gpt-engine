@@ -9,7 +9,7 @@ function SelectTemplate(props) {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {Object.keys(prompts).map((key) => (
-          <Dropdown.Item key={key}>{prompts[key].title}</Dropdown.Item>
+          <Dropdown.Item key={key} eventKey={key}>{prompts[key].title}</Dropdown.Item>
         ))}
       </Dropdown.Menu>
     </Dropdown>
