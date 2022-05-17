@@ -5,3 +5,12 @@
 #template-dropdown {
   min-width: 12rem;
 }
+
+#expand-settings-button {
+  width: 4rem;
+}
+
+.btn-outline-secondary:hover {
+  background-color: white;
+  color: var(--bs-secondary);
+}

@@ -7,6 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
 
 import SelectTemplate from "./SelectTemplate";
+import SettingsPanel from "./SettingsPanel";
 import prompts from "./prompts";
 
 class App extends React.Component {
@@ -15,11 +16,8 @@ class App extends React.Component {
     this.state = {
       textarea: '',
       apiKey: localStorage.getItem('apiKey') || '',
+      showSettingsPanel: false,
     };
-  }
-
-  handleChangeTextarea = (event) => {
-    this.setState({textarea: event.target.value});
   }
 
   handleChangeApiKey = (event) => {
@@ -84,12 +82,22 @@ class App extends React.Component {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Template</Form.Label>
-          <SelectTemplate
-            selectedTemplate={this.state.selectedTemplate}
-            handleSelectTemplate={this.handleSelectTemplate}
-          />
+          <Form.Label>Settings</Form.Label>
+          <div className="d-flex gap-2">
+            <SelectTemplate
+              selectedTemplate={this.state.selectedTemplate}
+              handleSelectTemplate={this.handleSelectTemplate}
+            />
+            <Button
+              id="expand-settings-button"
+              variant="outline-secondary"
+              onClick={() => this.setState({showSettingsPanel: !this.state.showSettingsPanel})}
+            >
+              {this.state.showSettingsPanel ? 'Hide' : 'Show'}
+            </Button>
+          </div>
         </Form.Group>
+        <SettingsPanel showSettingsPanel={this.state.showSettingsPanel} />
         <Form.Group>
           <Form.Label>Prompt</Form.Label>
           <TextareaAutosize
@@ -97,12 +105,13 @@ class App extends React.Component {
             style={{ resize: "none" }}
             minRows="4"
             value={this.state.textarea}
-            onChange={this.handleChangeTextarea}
+            onChange={(event) => this.setState({textarea: event.target.value})}
           />
         </Form.Group>
         <Button
           id="generate-button"
-          className="btn btn-lg btn-primary"
+          variant="primary"
+          size="lg"
           onClick={this.handleGenerate}
         >Generate</Button>
       </div>
