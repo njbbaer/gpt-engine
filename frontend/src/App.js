@@ -17,6 +17,7 @@ class App extends React.Component {
       textarea: '',
       apiKey: localStorage.getItem('apiKey') || '',
       showConfigurationPanel: false,
+      temperature: '',
     };
   }
 
@@ -27,9 +28,17 @@ class App extends React.Component {
   }
 
   handleSelectTemplate = (key, event) => {
+    const template = prompts[key];
     this.setState({
       selectedTemplate: event.target.text,
-      textarea: prompts[key].prompt,
+      textarea: template.prompt,
+      temperature: template.temperature,
+    });
+  }
+
+  handleChangeConfiguration = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
     });
   }
 
@@ -43,7 +52,7 @@ class App extends React.Component {
       body: JSON.stringify({
         prompt: this.state.textarea,
         max_tokens: 128,
-        frequency_penalty: 0.5,
+        temperature: parseFloat(this.state.temperature),
       })
     })
     .then(response => {
@@ -97,7 +106,11 @@ class App extends React.Component {
             </Button>
           </div>
         </Form.Group>
-        <ConfigurationPanel showConfigurationPanel={this.state.showConfigurationPanel} />
+        <ConfigurationPanel 
+          showConfigurationPanel={this.state.showConfigurationPanel}
+          handleChangeConfiguration={this.handleChangeConfiguration}
+          temperature={this.state.temperature}
+        />
         <Form.Group className="mt-3">
           <Form.Label>Prompt</Form.Label>
           <TextareaAutosize

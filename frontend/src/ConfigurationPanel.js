@@ -9,12 +9,17 @@ function ConfigurationPanel(props) {
     <SlideDown>
       { props.showConfigurationPanel &&
         <>
-          <div class="spacer"></div>
+          <div className="spacer"></div>
           <Card>
             <Card.Body>
               <Form.Group>
                 <Form.Label>Temperature</Form.Label>
-                <Form.Control data-lpignore="true" />
+                <Form.Control 
+                  name="temperature"
+                  data-lpignore="true"
+                  onChange={props.handleChangeConfiguration}
+                  value={props.temperature}
+                />
               </Form.Group>
             </Card.Body>
           </Card>
