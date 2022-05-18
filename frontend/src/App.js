@@ -36,12 +36,6 @@ class App extends React.Component {
     });
   }
 
-  handleChangeConfiguration = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
-
   handleGenerate = () => {
     fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
       method: 'POST',
@@ -108,7 +102,7 @@ class App extends React.Component {
         </Form.Group>
         <ConfigurationPanel 
           showConfigurationPanel={this.state.showConfigurationPanel}
-          handleChangeConfiguration={this.handleChangeConfiguration}
+          handleChangeTemperature={(event) => this.setState({temperature: event.target.value})}
           temperature={this.state.temperature}
         />
         <Form.Group className="mt-3">

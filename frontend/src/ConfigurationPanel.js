@@ -17,7 +17,7 @@ function ConfigurationPanel(props) {
                 <Form.Control 
                   name="temperature"
                   data-lpignore="true"
-                  onChange={props.handleChangeConfiguration}
+                  onChange={props.handleChangeTemperature}
                   value={props.temperature}
                 />
               </Form.Group>
