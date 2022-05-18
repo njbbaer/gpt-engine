@@ -1,5 +1,5 @@
 import Dropdown from "react-bootstrap/Dropdown";
-import prompts from "./prompts";
+import prompts from "./templates";
 
 function SelectTemplate(props) {
   return (

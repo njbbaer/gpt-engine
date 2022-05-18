@@ -8,7 +8,7 @@ import Alert from "./Alert";
 
 import SelectTemplate from "./SelectTemplate";
 import ConfigurationPanel from "./ConfigurationPanel";
-import prompts from "./prompts";
+import templates from "./templates";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class App extends React.Component {
   }
 
   handleSelectTemplate = (key, event) => {
-    const template = prompts[key];
+    const template = templates[key];
     this.setState({
       selectedTemplate: event.target.text,
       textarea: template.prompt,
