@@ -7,7 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
 
 import SelectTemplate from "./SelectTemplate";
-import SettingsPanel from "./SettingsPanel";
+import ConfigurationPanel from "./ConfigurationPanel";
 import prompts from "./prompts";
 
 class App extends React.Component {
@@ -16,7 +16,7 @@ class App extends React.Component {
     this.state = {
       textarea: '',
       apiKey: localStorage.getItem('apiKey') || '',
-      showSettingsPanel: false,
+      showConfigurationPanel: false,
     };
   }
 
@@ -82,22 +82,22 @@ class App extends React.Component {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Settings</Form.Label>
+          <Form.Label>Configuration</Form.Label>
           <div className="d-flex gap-2">
             <SelectTemplate
               selectedTemplate={this.state.selectedTemplate}
               handleSelectTemplate={this.handleSelectTemplate}
             />
             <Button
-              id="expand-settings-button"
+              id="expand-configuration-button"
               variant="outline-secondary"
-              onClick={() => this.setState({showSettingsPanel: !this.state.showSettingsPanel})}
+              onClick={() => this.setState({showConfigurationPanel: !this.state.showConfigurationPanel})}
             >
-              {this.state.showSettingsPanel ? 'Hide' : 'Show'}
+              {this.state.showConfigurationPanel ? 'Hide' : 'Show'}
             </Button>
           </div>
         </Form.Group>
-        <SettingsPanel showSettingsPanel={this.state.showSettingsPanel} />
+        <ConfigurationPanel showConfigurationPanel={this.state.showConfigurationPanel} />
         <Form.Group>
           <Form.Label>Prompt</Form.Label>
           <TextareaAutosize
