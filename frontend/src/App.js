@@ -69,9 +69,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container d-grid gap-3 mt-3">
+      <div className="container">
         <Alert>{this.state.alertText}</Alert>
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>API Key</Form.Label>
           <Form.Control
             type="password"
@@ -81,7 +81,7 @@ class App extends React.Component {
             value={this.state.apiKey}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>Configuration</Form.Label>
           <div className="d-flex gap-2">
             <SelectTemplate
@@ -98,7 +98,7 @@ class App extends React.Component {
           </div>
         </Form.Group>
         <ConfigurationPanel showConfigurationPanel={this.state.showConfigurationPanel} />
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>Prompt</Form.Label>
           <TextareaAutosize
             className="form-control"
@@ -112,6 +112,7 @@ class App extends React.Component {
           id="generate-button"
           variant="primary"
           size="lg"
+          className="mt-3"
           onClick={this.handleGenerate}
         >Generate</Button>
       </div>

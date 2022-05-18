@@ -1,9 +1,9 @@
-#generate-button {
-  width: 12rem;
+.spacer {
+  height: 16px;
 }
 
-#template-dropdown {
-  min-width: 12rem;
+#generate-button {
+  width: 12rem;
 }
 
 #expand-configuration-button {

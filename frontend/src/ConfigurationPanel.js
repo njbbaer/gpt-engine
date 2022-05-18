@@ -7,15 +7,18 @@ import { SlideDown } from "react-slidedown";
 function ConfigurationPanel(props) {
   return (
     <SlideDown>
-      { props.showConfigurationPanel && 
-        <Card>
-          <Card.Body>
-            <Form.Group>
-              <Form.Label>Temperature</Form.Label>
-              <Form.Control />
-            </Form.Group>
-          </Card.Body>
-        </Card>
+      { props.showConfigurationPanel &&
+        <>
+          <div class="spacer"></div>
+          <Card>
+            <Card.Body>
+              <Form.Group>
+                <Form.Label>Temperature</Form.Label>
+                <Form.Control data-lpignore="true" />
+              </Form.Group>
+            </Card.Body>
+          </Card>
+        </>
       }
     </SlideDown>
   );
