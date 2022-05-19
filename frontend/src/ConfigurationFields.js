@@ -17,8 +17,8 @@ function ConfigurationFields(props) {
                 <Form.Control 
                   name="temperature"
                   data-lpignore="true"
-                  onChange={props.handleChangeTemperature}
-                  value={props.temperature}
+                  onChange={props.handleChangeConfigurationField}
+                  value={props.configuration.temperature}
                 />
               </Form.Group>
             </Card.Body>

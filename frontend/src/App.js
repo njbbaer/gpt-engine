@@ -16,8 +16,8 @@ function App() {
   const [inputField, setInputField] = useState('');
   const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
-  const [temperature, setTemperature] = useState('');
   const [alertText, setAlertText] = useState('');
+  const [configuration, setConfiguration] = useState({temperature: ''});
 
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
@@ -29,7 +29,7 @@ function App() {
     const template = templates[key];
     setSelectedTemplate(event.target.text);
     setTextarea(template.prompt);
-    setTemperature(template.temperature);
+    setConfiguration({temperature: template.temperature});
   }
 
   function handleGenerate() {
@@ -46,7 +46,7 @@ function App() {
         prompt: prompt,
         max_tokens: 128,
         frequency_penalty: 0.5,
-        temperature: parseFloat(temperature),
+        temperature: parseFloat(configuration.temperature),
       })
     })
     .then(response => {
@@ -67,6 +67,12 @@ function App() {
         setAlertText('');
       }, 5000);
     });
+  }
+
+  function handleChangeConfigurationField(event) {
+    const newConfiguration = { ...configuration };
+    newConfiguration[event.target.name] = event.target.value;
+    setConfiguration(newConfiguration);
   }
 
   return (
@@ -100,8 +106,8 @@ function App() {
       </Form.Group>
       <ConfigurationFields 
         showConfigurationFields={showConfigurationFields}
-        handleChangeTemperature={(event) => setTemperature(event.target.value)}
-        temperature={temperature}
+        handleChangeConfigurationField={handleChangeConfigurationField}
+        configuration={configuration}
       />
       <Form.Group className="mt-3">
         <Form.Label>Prompt</Form.Label>
