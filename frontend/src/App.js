@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
@@ -10,44 +10,39 @@ import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
 import templates from "./templates";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      textarea: '',
-      apiKey: localStorage.getItem('apiKey') || '',
-      showConfigurationFields: false,
-      temperature: '',
-    };
+function App() {
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [textarea, setTextarea] = useState('');
+  const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
+  const [showConfigurationFields, setShowConfigurationFields] = useState(false);
+  const [temperature, setTemperature] = useState('');
+  const [alertText, setAlertText] = useState('');
+
+  function handleChangeApiKey(event) {
+    const newApiKey = event.target.value;
+    setApiKey(newApiKey);
+    localStorage.setItem('apiKey', newApiKey);
   }
 
-  handleChangeApiKey = (event) => {
-    const apiKey = event.target.value;
-    this.setState({apiKey: apiKey});
-    localStorage.setItem('apiKey', apiKey);
-  }
-
-  handleSelectTemplate = (key, event) => {
+  function handleSelectTemplate(key, event) {
     const template = templates[key];
-    this.setState({
-      selectedTemplate: event.target.text,
-      textarea: template.prompt,
-      temperature: template.temperature,
-    });
+    setSelectedTemplate(event.target.text);
+    setTextarea(template.prompt);
+    setTemperature(template.temperature);
   }
 
-  handleGenerate = () => {
+  function handleGenerate() {
     fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.state.apiKey}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: this.state.textarea,
+        prompt: textarea,
         max_tokens: 128,
         frequency_penalty: 0.5,
-        temperature: parseFloat(this.state.temperature),
+        temperature: parseFloat(temperature),
       })
     })
     .then(response => {
@@ -58,74 +53,72 @@ class App extends React.Component {
       }
     })
     .then(data => {
-      const new_textarea = this.state.textarea + data.choices[0].text
-      this.setState({textarea: new_textarea});
+      const new_textarea = textarea + data.choices[0].text
+      setTextarea(new_textarea);
     })
     .catch(response => {
       response.json().then((json) => {
-        this.setState({alertText: json.error.message});
+        setAlertText(json.error.message);
       })
       setTimeout(() => {
-        this.setState({alertText: ''});
+        setAlertText('');
       }, 5000);
     });
   }
 
-  render() {
-    return (
-      <div className="container">
-        <Alert>{this.state.alertText}</Alert>
-        <Form.Group className="mt-3">
-          <Form.Label>API Key</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter your OpenAI API key"
-            data-lpignore="true"  // Disable LastPass
-            onChange={this.handleChangeApiKey}
-            value={this.state.apiKey}
-          />
-        </Form.Group>
-        <Form.Group className="mt-3">
-          <Form.Label>Configuration</Form.Label>
-          <div className="d-flex gap-2">
-            <SelectTemplate
-              selectedTemplate={this.state.selectedTemplate}
-              handleSelectTemplate={this.handleSelectTemplate}
-            />
-            <Button
-              id="expand-configuration-button"
-              variant="outline-secondary"
-              onClick={() => this.setState({showConfigurationFields: !this.state.showConfigurationFields})}
-            >
-              {this.state.showConfigurationFields ? 'Hide' : 'Show'}
-            </Button>
-          </div>
-        </Form.Group>
-        <ConfigurationFields 
-          showConfigurationFields={this.state.showConfigurationFields}
-          handleChangeTemperature={(event) => this.setState({temperature: event.target.value})}
-          temperature={this.state.temperature}
+  return (
+    <div className="container">
+      <Alert>{alertText}</Alert>
+      <Form.Group className="mt-3">
+        <Form.Label>API Key</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter your OpenAI API key"
+          data-lpignore="true"  // Disable LastPass
+          onChange={handleChangeApiKey}
+          value={apiKey}
         />
-        <Form.Group className="mt-3">
-          <Form.Label>Prompt</Form.Label>
-          <TextareaAutosize
-            className="form-control"
-            style={{ resize: "none" }}
-            minRows="4"
-            value={this.state.textarea}
-            onChange={(event) => this.setState({textarea: event.target.value})}
+      </Form.Group>
+      <Form.Group className="mt-3">
+        <Form.Label>Configuration</Form.Label>
+        <div className="d-flex gap-2">
+          <SelectTemplate
+            selectedTemplate={selectedTemplate}
+            handleSelectTemplate={handleSelectTemplate}
           />
-        </Form.Group>
-        <Button
-          id="generate-button"
-          variant="primary"
-          size="lg"
-          className="mt-3"
-          onClick={this.handleGenerate}
-        >Generate</Button>
-      </div>
-    );
-  }
+          <Button
+            id="expand-configuration-button"
+            variant="outline-secondary"
+            onClick={() => setShowConfigurationFields(!showConfigurationFields)}
+          >
+            {showConfigurationFields ? 'Hide' : 'Show'}
+          </Button>
+        </div>
+      </Form.Group>
+      <ConfigurationFields 
+        showConfigurationFields={showConfigurationFields}
+        handleChangeTemperature={(event) => setTemperature(event.target.value)}
+        temperature={temperature}
+      />
+      <Form.Group className="mt-3">
+        <Form.Label>Prompt</Form.Label>
+        <TextareaAutosize
+          className="form-control"
+          style={{ resize: "none" }}
+          minRows="4"
+          value={textarea}
+          onChange={(event) => setTextarea(event.target.value)}
+        />
+      </Form.Group>
+      <Button
+        id="generate-button"
+        variant="primary"
+        size="lg"
+        className="mt-3"
+        onClick={handleGenerate}
+      >Generate</Button>
+    </div>
+  );
 }
 
 export default App;
