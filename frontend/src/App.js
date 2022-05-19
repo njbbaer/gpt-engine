@@ -17,7 +17,7 @@ function App() {
   const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [alertText, setAlertText] = useState('');
-  const [configuration, setConfiguration] = useState({temperature: ''});
+  const [configuration, setConfiguration] = useState({maxTokens: '', temperature: ''});
 
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
@@ -29,7 +29,10 @@ function App() {
     const template = templates[key];
     setSelectedTemplate(event.target.text);
     setTextarea(template.prompt);
-    setConfiguration({temperature: template.temperature});
+    setConfiguration({
+      temperature: template.temperature,
+      maxTokens: template.maxTokens,
+    });
   }
 
   function handleGenerate() {
@@ -44,9 +47,9 @@ function App() {
       },
       body: JSON.stringify({
         prompt: prompt,
-        max_tokens: 128,
-        frequency_penalty: 0.5,
+        max_tokens: parseInt(configuration.maxTokens),
         temperature: parseFloat(configuration.temperature),
+        frequency_penalty: 0.5,
       })
     })
     .then(response => {
@@ -114,8 +117,8 @@ function App() {
         <TextareaAutosize
           className="form-control"
           style={{ resize: "none" }}
-          minRows="4"
           value={textarea}
+          placeholder="Prompt body"
           onChange={(event) => setTextarea(event.target.value)}
         />
       </Form.Group>
@@ -124,7 +127,7 @@ function App() {
           className="form-control"
           style={{ resize: "none" }}
           value={inputField}
-          placeholder="Write your input here"
+          placeholder="Input"
           onChange={(event) => setInputField(event.target.value)}
         />
       </Form.Group>
