@@ -13,6 +13,7 @@ import templates from "./templates";
 function App() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [textarea, setTextarea] = useState('');
+  const [inputField, setInputField] = useState('');
   const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [temperature, setTemperature] = useState('');
@@ -32,6 +33,9 @@ function App() {
   }
 
   function handleGenerate() {
+    const prompt = textarea + inputField;
+    setTextarea(prompt);
+    setInputField('');
     fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
       method: 'POST',
       headers: {
@@ -39,7 +43,7 @@ function App() {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: textarea,
+        prompt: prompt,
         max_tokens: 128,
         frequency_penalty: 0.5,
         temperature: parseFloat(temperature),
@@ -53,8 +57,7 @@ function App() {
       }
     })
     .then(data => {
-      const new_textarea = textarea + data.choices[0].text
-      setTextarea(new_textarea);
+      setTextarea(prompt + data.choices[0].text);
     })
     .catch(response => {
       response.json().then((json) => {
@@ -108,6 +111,15 @@ function App() {
           minRows="4"
           value={textarea}
           onChange={(event) => setTextarea(event.target.value)}
+        />
+      </Form.Group>
+      <Form.Group className="mt-3">
+        <TextareaAutosize
+          className="form-control"
+          style={{ resize: "none" }}
+          value={inputField}
+          placeholder="Write your input here"
+          onChange={(event) => setInputField(event.target.value)}
         />
       </Form.Group>
       <Button
