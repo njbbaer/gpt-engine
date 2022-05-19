@@ -7,7 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
 
 import SelectTemplate from "./SelectTemplate";
-import ConfigurationPanel from "./ConfigurationPanel";
+import ConfigurationFields from "./ConfigurationFields";
 import templates from "./templates";
 
 class App extends React.Component {
@@ -16,7 +16,7 @@ class App extends React.Component {
     this.state = {
       textarea: '',
       apiKey: localStorage.getItem('apiKey') || '',
-      showConfigurationPanel: false,
+      showConfigurationFields: false,
       temperature: '',
     };
   }
@@ -46,6 +46,7 @@ class App extends React.Component {
       body: JSON.stringify({
         prompt: this.state.textarea,
         max_tokens: 128,
+        frequency_penalty: 0.5,
         temperature: parseFloat(this.state.temperature),
       })
     })
@@ -94,14 +95,14 @@ class App extends React.Component {
             <Button
               id="expand-configuration-button"
               variant="outline-secondary"
-              onClick={() => this.setState({showConfigurationPanel: !this.state.showConfigurationPanel})}
+              onClick={() => this.setState({showConfigurationFields: !this.state.showConfigurationFields})}
             >
-              {this.state.showConfigurationPanel ? 'Hide' : 'Show'}
+              {this.state.showConfigurationFields ? 'Hide' : 'Show'}
             </Button>
           </div>
         </Form.Group>
-        <ConfigurationPanel 
-          showConfigurationPanel={this.state.showConfigurationPanel}
+        <ConfigurationFields 
+          showConfigurationFields={this.state.showConfigurationFields}
           handleChangeTemperature={(event) => this.setState({temperature: event.target.value})}
           temperature={this.state.temperature}
         />

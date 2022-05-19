@@ -4,10 +4,10 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { SlideDown } from "react-slidedown";
 
-function ConfigurationPanel(props) {
+function ConfigurationFields(props) {
   return (
     <SlideDown>
-      { props.showConfigurationPanel &&
+      { props.showConfigurationFields &&
         <>
           <div className="spacer"></div>
           <Card>
@@ -29,4 +29,4 @@ function ConfigurationPanel(props) {
   );
 }
 
-export default ConfigurationPanel;
+export default ConfigurationFields;
