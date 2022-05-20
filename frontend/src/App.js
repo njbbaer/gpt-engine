@@ -17,6 +17,7 @@ function App() {
   const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [alertText, setAlertText] = useState('');
+  const [undoState, setUndoState] = useState('');
   const [configuration, setConfiguration] = useState({
     maxTokens: '', temperature: '', inputPrefix: '', inputSuffix: ''
   });
@@ -42,6 +43,10 @@ function App() {
   function handleGenerate() {
     const temp_textarea = textarea + configuration.inputPrefix + inputField;
     const prompt = temp_textarea + configuration.inputSuffix;
+    setUndoState({
+      texarea: textarea,
+      inputField: inputField,
+    })
     setTextarea(temp_textarea);
     setInputField('');
     fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
@@ -81,6 +86,11 @@ function App() {
     const newConfiguration = { ...configuration };
     newConfiguration[event.target.name] = event.target.value.replace(/\\n/g, '\n');
     setConfiguration(newConfiguration);
+  }
+
+  function handleUndo() {
+    setTextarea(undoState.texarea);
+    setInputField(undoState.inputField);
   }
 
   return (
@@ -136,13 +146,19 @@ function App() {
           onChange={(event) => setInputField(event.target.value)}
         />
       </Form.Group>
-      <Button
-        id="generate-button"
-        variant="primary"
-        size="lg"
-        className="mt-3 mb-3"
-        onClick={handleGenerate}
-      >Generate</Button>
+      <div className="d-flex gap-2 mt-3 mb-3">
+        <Button
+          id="generate-button"
+          variant="primary"
+          size="lg"
+          onClick={handleGenerate}
+        >Generate</Button>
+        <Button
+          variant="outline-primary"
+          size="lg"
+          onClick={handleUndo}
+        >Undo</Button>
+      </div>
     </div>
   );
 }
