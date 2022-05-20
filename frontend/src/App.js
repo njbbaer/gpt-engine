@@ -131,7 +131,6 @@ function App() {
         <Form.Label>Prompt</Form.Label>
         <TextareaAutosize
           className="form-control"
-          style={{ resize: "none" }}
           value={textarea}
           placeholder="Prompt body"
           onChange={(event) => setTextarea(event.target.value)}
@@ -140,7 +139,6 @@ function App() {
       <Form.Group className="mt-3">
         <TextareaAutosize
           className="form-control"
-          style={{ resize: "none" }}
           value={inputField}
           placeholder="Input"
           onChange={(event) => setInputField(event.target.value)}
