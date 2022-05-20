@@ -59,6 +59,13 @@ const templates = {
     inputPrefix: "\n Caroline: ",
     inputSuffix: "\n Cave Johnson:",
   },
+  glados: {
+    ...conversationDefaults,
+    title: "GLaDOS",
+    prompt: "GLaDOS is an artificially superintelligent computer system from the video game series Portal. She is responsible for testing and maintenance in the Aperture Science Computer-Aided Enrichment Center. Her personality is passive-aggressive, witty, narcissistic, and sinister. The following is a conversation between GLaDOS and her test subject Chell:\n",
+    inputPrefix: "\n Chell: ",
+    inputSuffix: "\n GLaDOS:",
+  }
 };
 
 export default templates
