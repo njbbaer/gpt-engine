@@ -140,7 +140,7 @@ function App() {
         id="generate-button"
         variant="primary"
         size="lg"
-        className="mt-3"
+        className="mt-3 mb-3"
         onClick={handleGenerate}
       >Generate</Button>
     </div>
