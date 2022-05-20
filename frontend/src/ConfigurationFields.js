@@ -30,6 +30,24 @@ function ConfigurationFields(props) {
                   value={props.configuration.temperature}
                 />
               </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Input Prefix</Form.Label>
+                <Form.Control 
+                  name="inputPrefix"
+                  data-lpignore="true"
+                  onChange={props.handleChangeConfigurationField}
+                  value={props.configuration.inputPrefix.replace(/\n/g, '\\n')}
+                />
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Input Suffix</Form.Label>
+                <Form.Control 
+                  name="inputSuffix"
+                  data-lpignore="true"
+                  onChange={props.handleChangeConfigurationField}
+                  value={props.configuration.inputSuffix.replace(/\n/g, '\\n')}
+                />
+              </Form.Group>
             </Card.Body>
           </Card>
         </>

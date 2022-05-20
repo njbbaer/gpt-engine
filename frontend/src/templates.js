@@ -1,6 +1,8 @@
 const defaults = {
   maxTokens: "256",
   temperature: "0.0",
+  inputPrefix: "\n\nQuestion:\n\n",
+  inputSuffix: "\n\nAnswer:",
 }
 
 const templates = {

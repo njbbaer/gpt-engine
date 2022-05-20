@@ -17,7 +17,9 @@ function App() {
   const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [alertText, setAlertText] = useState('');
-  const [configuration, setConfiguration] = useState({maxTokens: '', temperature: ''});
+  const [configuration, setConfiguration] = useState({
+    maxTokens: '', temperature: '', inputPrefix: '', inputSuffix: ''
+  });
 
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
@@ -32,12 +34,15 @@ function App() {
     setConfiguration({
       temperature: template.temperature,
       maxTokens: template.maxTokens,
+      inputPrefix: template.inputPrefix,
+      inputSuffix: template.inputSuffix
     });
   }
 
   function handleGenerate() {
-    const prompt = textarea + inputField;
-    setTextarea(prompt);
+    const temp_textarea = textarea + configuration.inputPrefix + inputField;
+    const prompt = temp_textarea + configuration.inputSuffix;
+    setTextarea(temp_textarea);
     setInputField('');
     fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
       method: 'POST',
@@ -74,7 +79,7 @@ function App() {
 
   function handleChangeConfigurationField(event) {
     const newConfiguration = { ...configuration };
-    newConfiguration[event.target.name] = event.target.value;
+    newConfiguration[event.target.name] = event.target.value.replace(/\\n/g, '\n');
     setConfiguration(newConfiguration);
   }
 
@@ -86,7 +91,7 @@ function App() {
         <Form.Control
           type="password"
           placeholder="Enter your OpenAI API key"
-          data-lpignore="true"  // Disable LastPass
+          data-lpignore="true"
           onChange={handleChangeApiKey}
           value={apiKey}
         />
