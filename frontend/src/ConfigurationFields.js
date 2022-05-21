@@ -48,6 +48,24 @@ function ConfigurationFields(props) {
                   value={props.configuration.inputSuffix.replace(/\n/g, '\\n')}
                 />
               </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Stop Sequences</Form.Label>
+                <Form.Control 
+                  name="inputSuffix"
+                  data-lpignore="true"
+                  onChange={props.handleChangeConfigurationField}
+                  value={props.configuration.stopSequences.replace(/\n/g, '\\n')}
+                />
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>Strip Newlines</Form.Label>
+                <Form.Check
+                  name="stripNewlines"
+                  type="checkbox"
+                  onChange={props.handleChangeConfigurationBoolean}
+                  checked={props.configuration.stripNewlines}
+                />
+              </Form.Group>
             </Card.Body>
           </Card>
         </>

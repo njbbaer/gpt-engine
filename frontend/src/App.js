@@ -19,7 +19,7 @@ function App() {
   const [alertText, setAlertText] = useState('');
   const [undoState, setUndoState] = useState('');
   const [configuration, setConfiguration] = useState({
-    maxTokens: '', temperature: '', inputPrefix: '', inputSuffix: ''
+    maxTokens: '', temperature: '', inputPrefix: '', inputSuffix: '', stopSequences: '', stripNewlines: false,
   });
 
   function handleChangeApiKey(event) {
@@ -33,10 +33,12 @@ function App() {
     setSelectedTemplate(event.target.text);
     setTextarea(template.prompt);
     setConfiguration({
-      temperature: template.temperature,
-      maxTokens: template.maxTokens,
-      inputPrefix: template.inputPrefix,
-      inputSuffix: template.inputSuffix
+      temperature: template.temperature || '',
+      maxTokens: template.maxTokens || '',
+      inputPrefix: template.inputPrefix || '',
+      inputSuffix: template.inputSuffix || '',
+      stopSequences: template.stopSequences || '',
+      stripNewlines: template.stripNewlines || false,
     });
   }
 
@@ -59,6 +61,7 @@ function App() {
         prompt: prompt,
         max_tokens: parseInt(configuration.maxTokens),
         temperature: parseFloat(configuration.temperature),
+        stop: configuration.stopSequences,
         frequency_penalty: 0.5,
       })
     })
@@ -70,7 +73,11 @@ function App() {
       }
     })
     .then(data => {
-      setTextarea(prompt + data.choices[0].text);
+      let output = data.choices[0].text;
+      if (configuration.stripNewlines) {
+        output = output.replace(/\n/g, ' ');
+      }
+      setTextarea(prompt + output);
     })
     .catch(response => {
       response.json().then((json) => {
@@ -85,6 +92,12 @@ function App() {
   function handleChangeConfigurationField(event) {
     const newConfiguration = { ...configuration };
     newConfiguration[event.target.name] = event.target.value.replace(/\\n/g, '\n');
+    setConfiguration(newConfiguration);
+  }
+
+  function handleChangeConfigurationBoolean(event) {
+    const newConfiguration = { ...configuration };
+    newConfiguration[event.target.name] = event.target.checked;
     setConfiguration(newConfiguration);
   }
 
@@ -125,6 +138,7 @@ function App() {
       <ConfigurationFields 
         showConfigurationFields={showConfigurationFields}
         handleChangeConfigurationField={handleChangeConfigurationField}
+        handleChangeConfigurationBoolean={handleChangeConfigurationBoolean}
         configuration={configuration}
       />
       <Form.Group className="mt-3">
