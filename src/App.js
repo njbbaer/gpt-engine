@@ -119,7 +119,6 @@ function App() {
 
   return (
     <div className="container">
-      <Alert>{alertText}</Alert>
       <Form.Group className="mt-3">
         <Form.Label>API Key</Form.Label>
         <Form.Control
@@ -161,6 +160,7 @@ function App() {
           onChange={(event) => setTextarea(event.target.value)}
         />
       </Form.Group>
+      <Alert>{alertText}</Alert>
       <Form.Group className="mt-3">
         <TextareaAutosize
           className="form-control"

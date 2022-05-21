@@ -7,9 +7,12 @@ function Alert(props) {
   return (
     <SlideDown>
       {props.children && (
-        <BootstrapAlert variant="danger" className="mb-0">
-          {props.children}
-        </BootstrapAlert>
+        <>
+          <div className="spacer"></div>
+          <BootstrapAlert variant="danger" className="mb-0" id="alert">
+            {props.children}
+          </BootstrapAlert>
+        </>
       )}
     </SlideDown>
   );
