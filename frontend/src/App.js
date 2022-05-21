@@ -45,6 +45,7 @@ function App() {
   function handleGenerate() {
     const temp_textarea = textarea + configuration.inputPrefix + inputField;
     const prompt = temp_textarea + configuration.inputSuffix;
+    const stopSequences = configuration.stopSequences.split(', ').filter(s => s !== '');
     setUndoState({
       texarea: textarea,
       inputField: inputField,
@@ -61,7 +62,7 @@ function App() {
         prompt: prompt,
         max_tokens: parseInt(configuration.maxTokens),
         temperature: parseFloat(configuration.temperature),
-        stop: configuration.stopSequences,
+        stop: (stopSequences.length !== 0) ? stopSequences : null,
         frequency_penalty: 0.5,
       })
     })

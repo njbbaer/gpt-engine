@@ -51,7 +51,7 @@ function ConfigurationFields(props) {
               <Form.Group className="mt-3">
                 <Form.Label>Stop Sequences</Form.Label>
                 <Form.Control 
-                  name="inputSuffix"
+                  name="stopSequences"
                   data-lpignore="true"
                   onChange={props.handleChangeConfigurationField}
                   value={props.configuration.stopSequences.replace(/\n/g, '\\n')}
