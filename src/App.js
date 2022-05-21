@@ -12,20 +12,25 @@ import templates from "./templates";
 
 function App() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [textarea, setTextarea] = useState('');
-  const [inputField, setInputField] = useState('');
-  const [apiKey, setApiKey] = useState(localStorage.getItem('apiKey') || '');
+  const [textarea, setTextarea] = useState("");
+  const [inputField, setInputField] = useState("");
+  const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
-  const [alertText, setAlertText] = useState('');
-  const [undoState, setUndoState] = useState('');
+  const [alertText, setAlertText] = useState("");
+  const [undoState, setUndoState] = useState("");
   const [configuration, setConfiguration] = useState({
-    maxTokens: '', temperature: '', inputPrefix: '', inputSuffix: '', stopSequences: '', stripNewlines: false,
+    maxTokens: "",
+    temperature: "",
+    inputPrefix: "",
+    inputSuffix: "",
+    stopSequences: "",
+    stripNewlines: false,
   });
 
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
     setApiKey(newApiKey);
-    localStorage.setItem('apiKey', newApiKey);
+    localStorage.setItem("apiKey", newApiKey);
   }
 
   function handleSelectTemplate(key, event) {
@@ -33,11 +38,11 @@ function App() {
     setSelectedTemplate(event.target.text);
     setTextarea(template.prompt);
     setConfiguration({
-      temperature: template.temperature || '',
-      maxTokens: template.maxTokens || '',
-      inputPrefix: template.inputPrefix || '',
-      inputSuffix: template.inputSuffix || '',
-      stopSequences: template.stopSequences || '',
+      temperature: template.temperature || "",
+      maxTokens: template.maxTokens || "",
+      inputPrefix: template.inputPrefix || "",
+      inputSuffix: template.inputSuffix || "",
+      stopSequences: template.stopSequences || "",
       stripNewlines: template.stripNewlines || false,
     });
   }
@@ -45,54 +50,59 @@ function App() {
   function handleGenerate() {
     const temp_textarea = textarea + configuration.inputPrefix + inputField;
     const prompt = temp_textarea + configuration.inputSuffix;
-    const stopSequences = configuration.stopSequences.split(', ').filter(s => s !== '');
+    const stopSequences = configuration.stopSequences
+      .split(", ")
+      .filter((s) => s !== "");
     setUndoState({
       texarea: textarea,
       inputField: inputField,
-    })
+    });
     setTextarea(temp_textarea);
-    setInputField('');
-    fetch('https://api.openai.com/v1/engines/text-davinci-002/completions', {
-      method: 'POST',
+    setInputField("");
+    fetch("https://api.openai.com/v1/engines/text-davinci-002/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         prompt: prompt,
         max_tokens: parseInt(configuration.maxTokens),
         temperature: parseFloat(configuration.temperature),
-        stop: (stopSequences.length !== 0) ? stopSequences : null,
+        stop: stopSequences.length !== 0 ? stopSequences : null,
         frequency_penalty: 0.5,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
       })
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        return Promise.reject(response);
-      }
-    })
-    .then(data => {
-      let output = data.choices[0].text;
-      if (configuration.stripNewlines) {
-        output = output.replace(/\n/g, ' ');
-      }
-      setTextarea(prompt + output);
-    })
-    .catch(response => {
-      response.json().then((json) => {
-        setAlertText(json.error.message);
+      .then((data) => {
+        let output = data.choices[0].text;
+        if (configuration.stripNewlines) {
+          output = output.replace(/\n/g, " ");
+        }
+        setTextarea(prompt + output);
       })
-      setTimeout(() => {
-        setAlertText('');
-      }, 5000);
-    });
+      .catch((response) => {
+        response.json().then((json) => {
+          setAlertText(json.error.message);
+        });
+        setTimeout(() => {
+          setAlertText("");
+        }, 5000);
+      });
   }
 
   function handleChangeConfigurationField(event) {
     const newConfiguration = { ...configuration };
-    newConfiguration[event.target.name] = event.target.value.replace(/\\n/g, '\n');
+    newConfiguration[event.target.name] = event.target.value.replace(
+      /\\n/g,
+      "\n"
+    );
     setConfiguration(newConfiguration);
   }
 
@@ -132,11 +142,11 @@ function App() {
             variant="outline-secondary"
             onClick={() => setShowConfigurationFields(!showConfigurationFields)}
           >
-            {showConfigurationFields ? 'Hide' : 'Show'}
+            {showConfigurationFields ? "Hide" : "Show"}
           </Button>
         </div>
       </Form.Group>
-      <ConfigurationFields 
+      <ConfigurationFields
         showConfigurationFields={showConfigurationFields}
         handleChangeConfigurationField={handleChangeConfigurationField}
         handleChangeConfigurationBoolean={handleChangeConfigurationBoolean}
@@ -165,12 +175,12 @@ function App() {
           variant="primary"
           size="lg"
           onClick={handleGenerate}
-        >Generate</Button>
-        <Button
-          variant="outline-primary"
-          size="lg"
-          onClick={handleUndo}
-        >Undo</Button>
+        >
+          Generate
+        </Button>
+        <Button variant="outline-primary" size="lg" onClick={handleUndo}>
+          Undo
+        </Button>
       </div>
     </div>
   );
