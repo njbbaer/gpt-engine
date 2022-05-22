@@ -46,7 +46,13 @@ const templates = {
     ...questionAnswerDefaults,
     title: "ASPEN Nutrition",
     prompt:
-      "The American Society of Enteral and Parenteral Nutrition (ASPEN) is a professional organization leading the science and practice of clinical nutrition. The following question was answered by ASPEN with a thorough, well-written, and researched response:",
+      "The American Society of Enteral and Parenteral Nutrition (ASPEN) is a professional organization leading the science and practice of clinical nutrition. The following question was answered by ASPEN with a thorough, well-written, and researched response.",
+  },
+  cooksIllustrated: {
+    ...questionAnswerDefaults,
+    title: "Cook's Illustrated",
+    prompt:
+      "Cook's Illustrated is an American cooking magazine published every two months by the America's Test Kitchen company. The following question was answered by an expert at Cook's Illustrated with a thorough, well-written, and researched response.",
   },
   // ------------
   // Conversation
@@ -64,7 +70,7 @@ const templates = {
     ...conversationDefaults,
     title: "Cave Johnson",
     prompt:
-      'Cave Johnson is the eccentric billionare founder of Aperture Science, a company which has a research policy to "throw science at the wall and see what sticks". A cigar-chewing tycoon, Cave is extroverted, enthusiastic, and opinionated. He is a fierce advocate for scientific research with no concern for expense, or the health and safety of his test subjects. Cave is fond of his personal assistant, a woman named Caroline whom he depends on to fulfill the role of executing his directives as well as providing comfort and support for the man in charge, himself. The following is a conversation between Cave Johnson and Caroline:\n',
+      'Cave Johnson is the eccentric billionaire founder of Aperture Science, a company which has a research policy to "throw science at the wall and see what sticks". A cigar-chewing tycoon, Cave is extroverted, enthusiastic, and opinionated. He is a fierce advocate for scientific research with no concern for expense, or the health and safety of his test subjects. Cave is fond of his personal assistant, a woman named Caroline whom he depends on to fulfill the role of executing his directives as well as providing comfort and support for the man in charge, himself. The following is a conversation between Cave Johnson and Caroline:\n',
     inputPrefix: "\nCaroline: ",
     inputSuffix: "\nCave Johnson:",
     stopSequences: "Caroline:",
