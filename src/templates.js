@@ -54,6 +54,12 @@ const templates = {
     prompt:
       "Cook's Illustrated is an American cooking magazine published every two months by the America's Test Kitchen company. The following question was answered by an expert at Cook's Illustrated with a thorough, well-written, and researched response.",
   },
+  cms: {
+    ...questionAnswerDefaults,
+    title: "Center for Medicare & Medicaid Services",
+    prompt:
+      "The Medicare Conditions of Participation, Conditions for Coverage and Requirements for Nursing Facilities are sets of requirements for acceptable quality in the operation of health care entities. The Center for Medicare & Medicaid Services (CMS) is responsible for certification, compliance, and enforcement of these requirements. The following question about nursing home regulations was answered by CMS with a thorough, well-written, and accurate response that cites specific rules.",
+  },
   // ------------
   // Conversation
   // ------------
