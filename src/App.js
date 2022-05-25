@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
-import { ArrowRepeat } from "react-bootstrap-icons";
+import { ArrowRepeat, ChevronDown, ChevronUp } from "react-bootstrap-icons";
 
 import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
@@ -142,11 +142,15 @@ function App() {
             handleSelectTemplate={handleSelectTemplate}
           />
           <Button
-            id="expand-configuration-button"
             variant="outline-secondary"
+            className="d-flex justify-content-center align-items-center"
             onClick={() => setShowConfigurationFields(!showConfigurationFields)}
           >
-            {showConfigurationFields ? "Hide" : "Show"}
+            {showConfigurationFields ? (
+              <ChevronUp size={18} />
+            ) : (
+              <ChevronDown size={18} />
+            )}
           </Button>
         </div>
       </Form.Group>

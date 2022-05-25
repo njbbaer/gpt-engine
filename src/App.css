@@ -10,10 +10,6 @@ textarea {
   width: 12rem;
 }
 
-#expand-configuration-button {
-  width: 4rem;
-}
-
 .btn-outline-secondary:hover {
   background-color: white;
   color: var(--bs-secondary);
