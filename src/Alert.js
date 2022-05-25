@@ -8,10 +8,10 @@ function Alert(props) {
     <SlideDown>
       {props.children && (
         <>
-          <div className="spacer"></div>
           <BootstrapAlert variant="danger" className="mb-0" id="alert">
             {props.children}
           </BootstrapAlert>
+          <div className="spacer"></div>
         </>
       )}
     </SlideDown>

@@ -5,7 +5,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
-import { ArrowRepeat, Plus, Dash } from "react-bootstrap-icons";
+import {
+  ArrowCounterclockwise,
+  Plus,
+  Dash,
+  Send,
+  SendExclamation,
+} from "react-bootstrap-icons";
 
 import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
@@ -163,33 +169,41 @@ function App() {
         <Form.Label>Prompt</Form.Label>
         <TextareaAutosize
           className="form-control"
+          minRows={2}
           value={textarea}
-          placeholder="Prompt body"
           onChange={(event) => setTextarea(event.target.value)}
         />
       </Form.Group>
+      <hr />
       <Alert>{alertText}</Alert>
-      <Form.Group className="mt-3">
+      <Form.Group>
         <TextareaAutosize
           className="form-control"
           value={inputField}
-          placeholder="Input"
           onChange={(event) => setInputField(event.target.value)}
         />
       </Form.Group>
-      <div className="d-flex gap-2 mt-3 mb-3">
+      <div
+        className="d-flex gap-2 mt-2 mb-2"
+        style={{ justifyContent: "flex-end" }}
+      >
+        <Button
+          variant="outline-primary"
+          className="d-flex justify-content-center align-items-center"
+          size="lg"
+          onClick={handleUndo}
+        >
+          <ArrowCounterclockwise size={20} />
+        </Button>
         <Button
           id="generate-button"
           variant="primary"
-          size="lg"
           className="d-flex justify-content-center align-items-center"
           disabled={isLoading}
+          size="lg"
           onClick={handleGenerate}
         >
-          {isLoading ? <ArrowRepeat size={28} /> : "Generate"}
-        </Button>
-        <Button variant="outline-primary" size="lg" onClick={handleUndo}>
-          Undo
+          {isLoading ? <SendExclamation size={20} /> : <Send size={20} />}
         </Button>
       </div>
     </div>

@@ -6,10 +6,6 @@ textarea {
   height: 16px;
 }
 
-#generate-button {
-  width: 12rem;
-}
-
 .btn-outline-secondary:hover {
   background-color: white;
   color: var(--bs-secondary);
