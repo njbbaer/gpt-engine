@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
 import Alert from "./Alert";
+import { ArrowRepeat } from "react-bootstrap-icons";
 
 import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
@@ -18,6 +19,7 @@ function App() {
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [alertText, setAlertText] = useState("");
   const [undoState, setUndoState] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [configuration, setConfiguration] = useState({
     maxTokens: "",
     temperature: "",
@@ -48,6 +50,7 @@ function App() {
   }
 
   function handleGenerate() {
+    setIsLoading(true);
     const temp_textarea = textarea + configuration.inputPrefix + inputField;
     const prompt = temp_textarea + configuration.inputSuffix;
     const stopSequences = configuration.stopSequences
@@ -86,10 +89,12 @@ function App() {
           output = output.replace(/\n/g, " ");
         }
         setTextarea(prompt + output);
+        setIsLoading(false);
       })
       .catch((response) => {
         response.json().then((json) => {
           setAlertText(json.error.message);
+          setIsLoading(false);
         });
         setTimeout(() => {
           setAlertText("");
@@ -174,9 +179,11 @@ function App() {
           id="generate-button"
           variant="primary"
           size="lg"
+          className="d-flex justify-content-center align-items-center"
+          disabled={isLoading}
           onClick={handleGenerate}
         >
-          Generate
+          {isLoading ? <ArrowRepeat size={28} /> : "Generate"}
         </Button>
         <Button variant="outline-primary" size="lg" onClick={handleUndo}>
           Undo
