@@ -51,8 +51,11 @@ function App() {
 
   function handleGenerate() {
     setIsLoading(true);
-    const temp_textarea = textarea + configuration.inputPrefix + inputField;
-    const prompt = temp_textarea + configuration.inputSuffix;
+    let temp_textarea = textarea;
+    if (inputField.length > 0)
+      temp_textarea += configuration.inputPrefix + inputField;
+    let prompt = temp_textarea;
+    if (inputField.length > 0) prompt += configuration.inputSuffix;
     const stopSequences = configuration.stopSequences
       .split(", ")
       .filter((s) => s !== "");
