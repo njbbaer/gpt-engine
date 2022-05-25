@@ -2,6 +2,12 @@ textarea {
   resize: none;
 }
 
+textarea:focus,
+input:focus {
+  box-shadow: none !important;
+  border-color: var(--bs-gray-400) !important;
+}
+
 .spacer {
   height: 16px;
 }
