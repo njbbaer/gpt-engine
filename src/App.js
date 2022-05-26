@@ -13,14 +13,14 @@ import Alert from "./Alert";
 import InputButtons from "./InputButtons";
 
 function App() {
-  const abortController = useRef(null);
+  const abortController = useRef(new AbortController());
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [textarea, setTextarea] = useState("");
   const [inputField, setInputField] = useState("");
   const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
   const [showConfigurationFields, setShowConfigurationFields] = useState(false);
   const [alertText, setAlertText] = useState("");
-  const [undoState, setUndoState] = useState("");
+  const [undoState, setUndoState] = useState({ textarea: "", inputField: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [configuration, setConfiguration] = useState({
     maxTokens: "",
