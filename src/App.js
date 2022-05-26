@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
@@ -13,6 +13,7 @@ import Alert from "./Alert";
 import InputButtons from "./InputButtons";
 
 function App() {
+  const abortController = useRef(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [textarea, setTextarea] = useState("");
   const [inputField, setInputField] = useState("");
@@ -66,24 +67,34 @@ function App() {
     });
     setTextarea(temp_textarea);
     setInputField("");
-    const response = await fetchCompletion({
+    performCompletion({
       prompt: prompt,
       max_tokens: parseInt(configuration.maxTokens),
       temperature: parseFloat(configuration.temperature),
       stop: stopSequences.length !== 0 ? stopSequences : null,
       frequency_penalty: 0.5,
-    });
+    })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          throw error;
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  async function performCompletion(body) {
+    const response = await fetchCompletion(body);
     const data = await response.json();
     if (response.ok) {
       let output = data.choices[0].text;
       if (configuration.stripNewlines) {
         output = output.replace(/\n/g, " ");
       }
-      setTextarea(prompt + output);
-      setIsLoading(false);
+      setTextarea(body.prompt + output);
     } else {
       setAlertText(data.error.message);
-      setIsLoading(false);
       setTimeout(() => {
         setAlertText("");
       }, 5000);
@@ -91,6 +102,7 @@ function App() {
   }
 
   function fetchCompletion(body) {
+    abortController.current = new AbortController();
     return fetch(
       "https://api.openai.com/v1/engines/text-davinci-002/completions",
       {
@@ -100,6 +112,7 @@ function App() {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify(body),
+        signal: abortController.current.signal,
       }
     );
   }
@@ -122,6 +135,7 @@ function App() {
   function handleUndo() {
     setTextarea(undoState.texarea);
     setInputField(undoState.inputField);
+    abortController.current.abort();
   }
 
   return (
