@@ -66,23 +66,13 @@ function App() {
     });
     setTextarea(temp_textarea);
     setInputField("");
-    const response = await fetch(
-      "https://api.openai.com/v1/engines/text-davinci-002/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          max_tokens: parseInt(configuration.maxTokens),
-          temperature: parseFloat(configuration.temperature),
-          stop: stopSequences.length !== 0 ? stopSequences : null,
-          frequency_penalty: 0.5,
-        }),
-      }
-    );
+    const response = await fetchCompletion({
+      prompt: prompt,
+      max_tokens: parseInt(configuration.maxTokens),
+      temperature: parseFloat(configuration.temperature),
+      stop: stopSequences.length !== 0 ? stopSequences : null,
+      frequency_penalty: 0.5,
+    });
     const data = await response.json();
     if (response.ok) {
       let output = data.choices[0].text;
@@ -98,6 +88,20 @@ function App() {
         setAlertText("");
       }, 5000);
     }
+  }
+
+  function fetchCompletion(body) {
+    return fetch(
+      "https://api.openai.com/v1/engines/text-davinci-002/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
   }
 
   function handleChangeConfigurationField(event) {
