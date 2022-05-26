@@ -8,7 +8,7 @@ function Header() {
         <div className="navbar-brand">
           <ChatLeftText /> Language Agent
         </div>
-        <a class="icon-link" href="https://github.com/njbbaer/gpt-agent">
+        <a className="icon-link" href="https://github.com/njbbaer/gpt-agent">
           <Github size={20} />
         </a>
       </div>

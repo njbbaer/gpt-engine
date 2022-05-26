@@ -4,18 +4,13 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
-import Alert from "./Alert";
-import {
-  ArrowCounterclockwise,
-  Plus,
-  Dash,
-  Send,
-  SendExclamation,
-} from "react-bootstrap-icons";
+import { Plus, Dash } from "react-bootstrap-icons";
 
+import templates from "./templates";
 import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
-import templates from "./templates";
+import Alert from "./Alert";
+import InputButtons from "./InputButtons";
 
 function App() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -176,36 +171,16 @@ function App() {
       </Form.Group>
       <hr />
       <Alert>{alertText}</Alert>
-      <Form.Group>
-        <TextareaAutosize
-          className="form-control"
-          value={inputField}
-          onChange={(event) => setInputField(event.target.value)}
-        />
-      </Form.Group>
-      <div
-        className="d-flex gap-2 mt-2 mb-2"
-        style={{ justifyContent: "flex-end" }}
-      >
-        <Button
-          variant="outline-primary"
-          className="d-flex justify-content-center align-items-center"
-          size="lg"
-          onClick={handleUndo}
-        >
-          <ArrowCounterclockwise size={20} />
-        </Button>
-        <Button
-          id="generate-button"
-          variant="primary"
-          className="d-flex justify-content-center align-items-center"
-          disabled={isLoading}
-          size="lg"
-          onClick={handleGenerate}
-        >
-          {isLoading ? <SendExclamation size={20} /> : <Send size={20} />}
-        </Button>
-      </div>
+      <TextareaAutosize
+        className="form-control"
+        value={inputField}
+        onChange={(event) => setInputField(event.target.value)}
+      />
+      <InputButtons
+        handleGenerate={handleGenerate}
+        handleUndo={handleUndo}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
