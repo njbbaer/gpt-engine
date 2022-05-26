@@ -4,7 +4,7 @@ textarea {
 
 textarea:focus,
 input:focus {
-  box-shadow: none !important;
+  box-shadow: 0 0 2px 2px var(--bs-gray-400) !important;
   border-color: var(--bs-gray-400) !important;
 }
 
