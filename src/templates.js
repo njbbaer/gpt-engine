@@ -56,9 +56,9 @@ const templates = {
   },
   cms: {
     ...questionAnswerDefaults,
-    title: "Center for Medicare & Medicaid Services",
+    title: "Centers for Medicare & Medicaid Services",
     prompt:
-      "The Medicare Conditions of Participation, Conditions for Coverage and Requirements for Nursing Facilities are sets of requirements for acceptable quality in the operation of health care entities. The Center for Medicare & Medicaid Services (CMS) is responsible for certification, compliance, and enforcement of these requirements. The following question about nursing home regulations was answered by CMS with a thorough, well-written, and accurate response that cites specific rules.",
+      "The Medicare Conditions of Participation, Conditions for Coverage and Requirements for Nursing Facilities are sets of requirements for acceptable quality in the operation of health care entities. The Centers for Medicare & Medicaid Services (CMS) is responsible for certification, compliance, and enforcement of these requirements. The following question about nursing home regulations was answered by CMS with a thorough, well-written, and accurate response that cites specific rules.",
   },
   // ------------
   // Conversation
