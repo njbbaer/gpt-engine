@@ -1,16 +1,21 @@
 import Nav from "react-bootstrap/Nav";
-import { ChatLeftText, Github } from "react-bootstrap-icons";
+import { ChatLeftText, Github, Lightbulb } from "react-bootstrap-icons";
 
 function Header() {
   return (
     <Nav className="navbar navbar-light bg-light">
       <div className="container">
         <div className="navbar-brand">
-          <ChatLeftText /> Language Agent
+          <ChatLeftText size={24} /> Language Agent
         </div>
-        <a className="icon-link" href="https://github.com/njbbaer/gpt-agent">
-          <Github size={20} />
-        </a>
+        <div>
+          <a className="icon-link" href="https://github.com/njbbaer/gpt-agent">
+            <Github size={24} />
+          </a>
+          <a className="icon-link" href="https://forms.gle/QAv5GyGmVUNyZndQ9">
+            <Lightbulb size={24} />
+          </a>
+        </div>
       </div>
     </Nav>
   );
