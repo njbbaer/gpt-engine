@@ -18,6 +18,11 @@ input:focus {
 }
 
 .btn-outline-secondary:hover {
-  background-color: white;
+  background-color: var(--bs-gray-200);
   color: var(--bs-secondary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--bs-gray-200);
+  color: var(--bs-primary);
 }
