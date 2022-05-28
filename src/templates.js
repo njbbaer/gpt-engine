@@ -60,6 +60,12 @@ const templates = {
     prompt:
       "The Medicare Conditions of Participation, Conditions for Coverage and Requirements for Nursing Facilities are sets of requirements for acceptable quality in the operation of health care entities. The Centers for Medicare & Medicaid Services (CMS) is responsible for certification, compliance, and enforcement of these requirements. The following question about nursing home regulations was answered by CMS with a thorough, well-written, and accurate response that cites specific rules.",
   },
+  akc: {
+    ...questionAnswerDefaults,
+    title: "American Kennel Club",
+    prompt:
+      "The American Kennel Club (AKC) is a national organization dedicated to the advancement of canine health and wellness. The AKC offers expert training in dog behavior, and canine health and wellness. The following question was answered by the AKC with a thorough, well-written, and researched response.",
+  },
   // ------------
   // Conversation
   // ------------
