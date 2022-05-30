@@ -11,6 +11,7 @@ import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
 import Alert from "./Alert";
 import InputButtons from "./InputButtons";
+import InfoBoxes from "./InfoBoxes";
 
 function App() {
   const abortController = useRef(new AbortController());
@@ -188,6 +189,7 @@ function App() {
         value={inputField}
         onChange={(event) => setInputField(event.target.value)}
       />
+      <InfoBoxes textarea={textarea} inputField={inputField} />
       <InputButtons
         handleGenerate={handleGenerate}
         handleUndo={handleUndo}
