@@ -66,6 +66,7 @@ function App() {
       texarea: textarea,
       inputField: inputField,
     });
+    addCharsToSessionTotal(prompt.length);
     setTextarea(temp_textarea);
     setInputField("");
     performCompletion({
@@ -116,6 +117,12 @@ function App() {
         signal: abortController.current.signal,
       }
     );
+  }
+
+  function addCharsToSessionTotal(length) {
+    let totalChars = Number(sessionStorage.getItem("total-chars")) || 0;
+    totalChars += length;
+    sessionStorage.setItem("total-chars", totalChars);
   }
 
   function handleChangeConfigurationField(event) {
@@ -189,7 +196,10 @@ function App() {
         value={inputField}
         onChange={(event) => setInputField(event.target.value)}
       />
-      <InfoBoxes textarea={textarea} inputField={inputField} />
+      <InfoBoxes
+        chars={textarea.length + inputField.length}
+        totalChars={Number(sessionStorage.getItem("total-chars"))}
+      />
       <InputButtons
         handleGenerate={handleGenerate}
         handleUndo={handleUndo}
