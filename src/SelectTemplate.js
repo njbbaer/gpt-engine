@@ -5,6 +5,7 @@ function SelectTemplate(props) {
   function dropwdown_items(type) {
     return Object.keys(templates)
       .filter((key) => templates[key].type === type)
+      .reverse()
       .map((key) => (
         <Dropdown.Item key={key} eventKey={key}>
           {templates[key].title}
