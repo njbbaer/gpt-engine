@@ -1,9 +1,0 @@
-variations:
-  A: |-
-    foo
-
-  B: |-
-    bar
-
-variables:
-  - baz

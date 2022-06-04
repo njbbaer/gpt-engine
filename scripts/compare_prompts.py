@@ -12,12 +12,13 @@ def complete(prompt):
         prompt=prompt,
         temperature=0,
         frequency_penalty=0.5,
-        max_tokens=32,
+        max_tokens=256,
+        stop='Interviewer:',
     ).choices[0].text.strip()
 
 
 def print_results(keys, results):
-    if len(keys) == 0:
+    if len(results) == 0:
         return
     print('\nResults:')
     for key in keys:
@@ -40,6 +41,7 @@ for i, variable in enumerate(data['variables']):
         prompt = variation.replace('<<variable>>', variable)
         print(complete(prompt) + '\n')
     choice = input('Which variation is best? ')
-    results.append(shuffled_keys[int(choice) - 1])
+    if choice != '':
+        results.append(shuffled_keys[int(choice) - 1])
     print_results(keys, results)
     print()
