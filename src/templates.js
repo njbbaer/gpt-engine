@@ -129,9 +129,18 @@ const templates = {
     title: "Hell's Kitchen",
     prompt:
       "Hell's Kitchen is an American reality competition cooking show hosted by celebrity chef Gordon Ramsay. Each season, two teams of chefs compete for a job as head chef at a restaurant, while working in the kitchen of a restaurant set up in a television studio. Ramsay's television personality is defined by his bluntness, fiery temper, strict demeanour, and frequent use of profanity. The following is a conversation between Gordon Ramsay and a junior chef competing on Hell's Kitchen.\n\nTranscript:",
-    inputPrefix: "\nChef: ",
+    inputPrefix: "\nJunior Chef: ",
     inputSuffix: "\nGordon Ramsay:",
-    stopSequences: "Chef:",
+    stopSequences: "Junior Chef:",
+  },
+  barackObama: {
+    ...conversationDefaults,
+    title: "Barack Obama",
+    prompt:
+      "The following is a conversation between Barack Obama and an interviewer. Obama answers the interviewer's questions with long and detailed responses.\n\nTranscript:",
+    inputPrefix: "\nInterviewer: ",
+    inputSuffix: "\nBarack Obama:",
+    stopSequences: "Interviewer:",
   },
 };
 
