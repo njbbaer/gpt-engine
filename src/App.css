@@ -32,3 +32,10 @@ input:focus {
   font-size: 12px;
   background-color: rgba(0, 0, 0, 0.03);
 }
+
+#template-dropdown-toggle {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+}

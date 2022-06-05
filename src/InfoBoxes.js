@@ -8,7 +8,7 @@ function InfoBoxes(props) {
   }
 
   return (
-    <div className="d-flex gap-2 mt-2" style={{ justifyContent: "flex-end" }}>
+    <div className="d-flex gap-2 mt-2 justify-content-end">
       <div className="info-box card text-muted">${cost()} spent</div>
       <div className="info-box card text-muted">{tokens()} tokens</div>
     </div>

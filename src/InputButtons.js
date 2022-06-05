@@ -7,10 +7,7 @@ import {
 
 function InputButtons(props) {
   return (
-    <div
-      className="d-flex gap-2 mt-2 mb-2"
-      style={{ justifyContent: "flex-end" }}
-    >
+    <div className="d-flex gap-2 mt-2 mb-2 justify-content-end">
       <Button
         variant="outline-primary"
         className="d-flex justify-content-center align-items-center"

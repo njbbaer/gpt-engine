@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
-import { Plus, Dash } from "react-bootstrap-icons";
+import { Plus, Dash, ArrowRepeat } from "react-bootstrap-icons";
 
 import templates from "./templates";
 import SelectTemplate from "./SelectTemplate";
@@ -38,9 +38,10 @@ function App() {
     localStorage.setItem("apiKey", newApiKey);
   }
 
-  function handleSelectTemplate(key, event) {
+  function handleSelectTemplate(key) {
     const template = templates[key];
-    setSelectedTemplate(event.target.text);
+    if (!template) return;
+    setSelectedTemplate(key);
     setTextarea(template.prompt);
     setConfiguration({
       temperature: template.temperature || "",
@@ -164,10 +165,18 @@ function App() {
           <SelectTemplate
             selectedTemplate={selectedTemplate}
             handleSelectTemplate={handleSelectTemplate}
+            style={{ minWidth: 0 }}
           />
           <Button
             variant="outline-secondary"
-            className="d-flex justify-content-center align-items-center"
+            className="d-flex align-items-center"
+            onClick={() => handleSelectTemplate(selectedTemplate)}
+          >
+            <ArrowRepeat size={18} />
+          </Button>
+          <Button
+            variant="outline-secondary"
+            className="d-flex align-items-center"
             onClick={() => setShowConfigurationFields(!showConfigurationFields)}
           >
             {showConfigurationFields ? <Dash size={18} /> : <Plus size={18} />}
