@@ -142,9 +142,14 @@ function App() {
   }
 
   function handleUndo() {
+    abortController.current.abort();
     setTextarea(undoState.texarea);
     setInputField(undoState.inputField);
+  }
+
+  function handleReset() {
     abortController.current.abort();
+    handleSelectTemplate(selectedTemplate);
   }
 
   return (
@@ -170,7 +175,7 @@ function App() {
           <Button
             variant="outline-secondary"
             className="d-flex align-items-center"
-            onClick={() => handleSelectTemplate(selectedTemplate)}
+            onClick={() => handleReset()}
           >
             <ArrowRepeat size={18} />
           </Button>
