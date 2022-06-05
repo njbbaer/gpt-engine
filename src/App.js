@@ -1,17 +1,15 @@
 import "./App.css";
 
 import React, { useState, useRef } from "react";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
-import { Plus, Dash, ArrowRepeat } from "react-bootstrap-icons";
 
 import templates from "./templates";
-import SelectTemplate from "./SelectTemplate";
 import ConfigurationFields from "./ConfigurationFields";
 import Alert from "./Alert";
 import InputButtons from "./InputButtons";
 import InfoBoxes from "./InfoBoxes";
+import ConfigurationButtons from "./ConfigurationButtons";
 
 function App() {
   const abortController = useRef(new AbortController());
@@ -166,27 +164,13 @@ function App() {
       </Form.Group>
       <Form.Group className="mt-3">
         <Form.Label>Configuration</Form.Label>
-        <div className="d-flex gap-2">
-          <SelectTemplate
-            selectedTemplate={selectedTemplate}
-            handleSelectTemplate={handleSelectTemplate}
-            style={{ minWidth: 0 }}
-          />
-          <Button
-            variant="outline-secondary"
-            className="d-flex align-items-center"
-            onClick={() => handleReset()}
-          >
-            <ArrowRepeat size={18} />
-          </Button>
-          <Button
-            variant="outline-secondary"
-            className="d-flex align-items-center"
-            onClick={() => setShowConfigurationFields(!showConfigurationFields)}
-          >
-            {showConfigurationFields ? <Dash size={18} /> : <Plus size={18} />}
-          </Button>
-        </div>
+        <ConfigurationButtons
+          selectedTemplate={selectedTemplate}
+          handleSelectTemplate={handleSelectTemplate}
+          handleReset={handleReset}
+          showConfigurationFields={showConfigurationFields}
+          setShowConfigurationFields={setShowConfigurationFields}
+        />
       </Form.Group>
       <ConfigurationFields
         showConfigurationFields={showConfigurationFields}

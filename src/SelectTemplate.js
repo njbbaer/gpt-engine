@@ -14,11 +14,12 @@ function SelectTemplate(props) {
   }
 
   return (
-    <Dropdown onSelect={props.handleSelectTemplate} style={props.style}>
-      <Dropdown.Toggle
-        variant="outline-secondary"
-        id="template-dropdown-toggle"
-      >
+    <Dropdown
+      onSelect={props.handleSelectTemplate}
+      id="template-dropdown"
+      style={props.style}
+    >
+      <Dropdown.Toggle variant="outline-secondary">
         {templates[props.selectedTemplate]?.title || "Select a template"}
       </Dropdown.Toggle>
       <Dropdown.Menu>

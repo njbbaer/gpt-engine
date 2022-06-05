@@ -33,9 +33,19 @@ input:focus {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-#template-dropdown-toggle {
+#template-dropdown {
+  min-width: 0;
+}
+
+#template-dropdown > button {
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;
   overflow: hidden;
+}
+
+@media (max-width: 576px) {
+  #template-dropdown {
+    width: 100%;
+  }
 }
