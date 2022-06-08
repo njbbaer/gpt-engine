@@ -66,6 +66,14 @@ const templates = {
     prompt:
       "The American Kennel Club (AKC) is a national organization dedicated to the advancement of canine health and wellness. The AKC offers expert training in dog behavior, and canine health and wellness. The following question was answered by the AKC with a thorough, well-written, and researched response.",
   },
+  nyTimes: {
+    ...questionAnswerDefaults,
+    title: "The New York Times",
+    prompt:
+      "The following article appeared in The New York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.\n",
+    inputPrefix: "\nHeadline:\n",
+    inputSuffix: "\n",
+  },
   // ------------
   // Conversation
   // ------------
@@ -141,6 +149,15 @@ const templates = {
     inputPrefix: "\nInterviewer: ",
     inputSuffix: "\nBarack Obama:",
     stopSequences: "Interviewer:",
+  },
+  drHumerus: {
+    ...conversationDefaults,
+    title: "Dr. Humerus",
+    prompt:
+      "Dr. Humerus is a bad doctor. He gives long and descriptive bad advice that is hilariously wrong. The following are transcripts of conversations between Dr. Humerus and his patients, who he treats incorrectly.\n\nTranscript 1:\nPatient: Help me doctor. My arm hurts when I move it.\nDr. Humerus: Oh dear. I'm afraid we'll need to amputate.\n\nTranscript 2:",
+    inputPrefix: "\nPatient: ",
+    inputSuffix: "\nDr. Humerus:",
+    stopSequences: "Patient:",
   },
 };
 
