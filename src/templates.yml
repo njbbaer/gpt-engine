@@ -1,5 +1,5 @@
 defaults:
-  questionAnswer:
+  answerQuestion:
     maxTokens: 256
     temperature: "0.0"
     inputPrefix: "\n\nQuestion:\n\n"
@@ -15,46 +15,46 @@ templates:
   # -----------------
   genericQa:
     title: Generic Q&A
-    type: questionAnswer
+    type: answerQuestion
     prompts: |-
       The following question was answered with a thorough, well-written, and researched response.
   stackOverflow:
     title: Stack Overflow
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       Stack Overflow is a website for professional programmers that features questions and answers on a wide range of topics in computer programming. The following question was answered with a thorough, well-written, and researched response.
   isw:
     title: Institute for the Study of War
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       The Institute for the Study of War (ISW) is a think tank, providing research and analysis regarding issues of defense and foreign affairs. It focuses on military operations, enemy threats, and political trends in diverse conflict zones. The following question was answered by ISW with a thorough, well-written, and researched response.
   nutritionTextbook:
     title: Nutrition Textbook
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       Krause's Food & the Nutrition Care Process is a comprehensive nutrition textbook covering a variety of nutrition-related topics ranging from the basics of digestion and absorption to sports nutrition to medical nutrition therapy. The following question was answered by the textbook with a thorough, well-written, and researched response.
   aspenNutrition:
     title: ASPEN Nutrition
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       The American Society of Enteral and Parenteral Nutrition (ASPEN) is a professional organization leading the science and practice of clinical nutrition. The following question was answered by ASPEN with a thorough, well-written, and researched response.
   cooksIllustrated:
     title: Cooks Illustrated
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       Cook's Illustrated is an American cooking magazine published every two months by the America's Test Kitchen company. The following question was answered by an expert at Cook's Illustrated with a thorough, well-written, and researched response.
   cms:
     title: Centers for Medicare & Medicaid Services
-    type: questionAnswer
+    type: answerQuestion
     prompt: |-
       The Medicare Conditions of Participation, Conditions for Coverage and Requirements for Nursing Facilities are sets of requirements for acceptable quality in the operation of health care entities. The Centers for Medicare & Medicaid Services (CMS) is responsible for certification, compliance, and enforcement of these requirements. The following question about nursing home regulations was answered by CMS with a thorough, well-written, and accurate response that cites specific rules.
   akc:
     title: American Kennel Club
-    type: questionAnswer
+    type: answerQuestion
     prompt: The American Kennel Club (AKC) is a national organization dedicated to the advancement of canine health and wellness. The AKC offers expert training in dog behavior, and canine health and wellness. The following question was answered by the AKC with a thorough, well-written, and researched response.
   nyTimes:
     title: The New York Times
-    type: questionAnswer
+    type: answerQuestion
     prompt: The following article appeared in The NeDrw York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.
   drHumerus:
     title: Dr. Humerus

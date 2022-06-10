@@ -1,14 +1,14 @@
 import Dropdown from "react-bootstrap/Dropdown";
-import templates from "./templates";
 
 function SelectTemplate(props) {
   function dropwdown_items(type) {
-    return Object.keys(templates)
-      .filter((key) => templates[key].type === type)
+    if (!props.templates) return [];
+    return Object.keys(props.templates)
+      .filter((key) => props.templates[key].type === type)
       .reverse()
       .map((key) => (
         <Dropdown.Item key={key} eventKey={key}>
-          {templates[key].title}
+          {props.templates[key].title}
         </Dropdown.Item>
       ));
   }

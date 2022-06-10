@@ -10,6 +10,7 @@ function ConfigurationButtons(props) {
         selectedTemplate={props.selectedTemplate}
         handleSelectTemplate={props.handleSelectTemplate}
         getTemplate={props.getTemplate}
+        templates={props.templates}
       />
       <Button
         variant="outline-secondary"

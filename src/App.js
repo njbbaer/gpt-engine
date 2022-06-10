@@ -188,6 +188,7 @@ function App() {
           showConfigurationFields={showConfigurationFields}
           setShowConfigurationFields={setShowConfigurationFields}
           getTemplate={getTemplate}
+          templates={templates.templates}
         />
       </Form.Group>
       <ConfigurationFields
