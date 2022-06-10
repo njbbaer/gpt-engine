@@ -55,7 +55,7 @@ templates:
   nyTimes:
     title: The New York Times
     type: answerQuestion
-    prompt: The following article appeared in The NeDrw York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.
+    prompt: The following article appeared in The New York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.
   drHumerus:
     title: Dr. Humerus
     type: conversation
