@@ -20,7 +20,9 @@ function SelectTemplate(props) {
       style={props.style}
     >
       <Dropdown.Toggle variant="outline-secondary">
-        {templates[props.selectedTemplate]?.title || "Select a template"}
+        {props.selectedTemplate
+          ? props.getTemplate(props.selectedTemplate).title
+          : "Select a template"}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Header>Answer Question</Dropdown.Header>

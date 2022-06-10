@@ -1,15 +1,16 @@
 import "./App.css";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
+import yaml from "js-yaml";
 
-import templates from "./templates";
 import ConfigurationFields from "./ConfigurationFields";
 import Alert from "./Alert";
 import InputButtons from "./InputButtons";
 import InfoBoxes from "./InfoBoxes";
 import ConfigurationButtons from "./ConfigurationButtons";
+import templatesPath from "./templates.yml";
 
 function App() {
   const abortController = useRef(new AbortController());
@@ -21,6 +22,7 @@ function App() {
   const [alertText, setAlertText] = useState("");
   const [undoState, setUndoState] = useState({ textarea: "", inputField: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [templates, setTemplates] = useState({});
   const [configuration, setConfiguration] = useState({
     maxTokens: "",
     temperature: "",
@@ -30,15 +32,30 @@ function App() {
     stripNewlines: false,
   });
 
+  // Fetch templates from YAML file
+  useEffect(() => {
+    fetch(templatesPath).then((response) => {
+      response.text().then((data) => {
+        setTemplates(yaml.load(data));
+      });
+    });
+  }, []);
+
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
     setApiKey(newApiKey);
     localStorage.setItem("apiKey", newApiKey);
   }
 
+  function getTemplate(key) {
+    const template = templates.templates[key];
+    if (!template) debugger;
+    const defaults = templates.defaults[template.type];
+    return { ...defaults, ...template };
+  }
+
   function handleSelectTemplate(key) {
-    const template = templates[key];
-    if (!template) return;
+    const template = getTemplate(key);
     setSelectedTemplate(key);
     setTextarea(template.prompt);
     setConfiguration({
@@ -170,6 +187,7 @@ function App() {
           handleReset={handleReset}
           showConfigurationFields={showConfigurationFields}
           setShowConfigurationFields={setShowConfigurationFields}
+          getTemplate={getTemplate}
         />
       </Form.Group>
       <ConfigurationFields
