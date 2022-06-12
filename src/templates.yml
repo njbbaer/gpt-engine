@@ -1,13 +1,13 @@
 defaults:
   answerQuestion:
-    maxTokens: 256
+    maxTokens: 512
     temperature: "0.0"
     inputPrefix: "\n\nQuestion:\n\n"
     inputSuffix: "\n\nAnswer:"
     stopSequences: "Question:"
   conversation:
-    maxTokens: 256
-    temperature: "0.0"
+    maxTokens: 512
+    temperature: "0.7"
     stripNewlines: true
 templates:
   # -----------------
