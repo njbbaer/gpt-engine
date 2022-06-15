@@ -29,6 +29,8 @@ function SelectTemplate(props) {
         {dropwdown_items("answerQuestion")}
         <Dropdown.Header>Conversation</Dropdown.Header>
         {dropwdown_items("conversation")}
+        <Dropdown.Header>Other</Dropdown.Header>
+        {dropwdown_items("other")}
       </Dropdown.Menu>
     </Dropdown>
   );
