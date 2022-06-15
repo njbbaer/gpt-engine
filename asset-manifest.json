@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/language-agent/static/css/main.9abd1d89.css",
-    "main.js": "/language-agent/static/js/main.8f0e5b06.js",
-    "static/media/templates.yml": "/language-agent/static/media/templates.38961d2354cd757e78a0.yml",
+    "main.js": "/language-agent/static/js/main.eb784f78.js",
+    "static/media/templates.yml": "/language-agent/static/media/templates.a0b0b27997f3a0305fcd.yml",
     "index.html": "/language-agent/index.html",
     "main.9abd1d89.css.map": "/language-agent/static/css/main.9abd1d89.css.map",
-    "main.8f0e5b06.js.map": "/language-agent/static/js/main.8f0e5b06.js.map"
+    "main.eb784f78.js.map": "/language-agent/static/js/main.eb784f78.js.map"
   },
   "entrypoints": [
     "static/css/main.9abd1d89.css",
-    "static/js/main.8f0e5b06.js"
+    "static/js/main.eb784f78.js"
   ]
 }

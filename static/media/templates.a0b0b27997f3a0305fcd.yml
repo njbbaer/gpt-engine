@@ -9,9 +9,12 @@ defaults:
     maxTokens: 512
     temperature: "0.7"
     stripNewlines: true
+  other:
+    maxTokens: 512
+    temperature: "0.0"
 templates:
   # -----------------
-  # Question & Answer
+  # Answer Question
   # -----------------
   genericQa:
     title: Generic Q&A
@@ -53,11 +56,6 @@ templates:
     type: answerQuestion
     prompt: |-
       The American Kennel Club (AKC) is a national organization dedicated to the advancement of canine health and wellness. The AKC offers expert training in dog behavior, and canine health and wellness. The following question was answered by the AKC with a thorough, well-written, and researched response.
-  nyTimes:
-    title: The New York Times
-    type: answerQuestion
-    prompt: |-
-      The following article appeared in The New York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.
   # ------------
   # Conversation
   # ------------
@@ -156,3 +154,14 @@ templates:
       Dr. Humerus: Oh dear. I'm afraid we'll need to amputate.
       
       Transcript 2:
+  # -----
+  # Other
+  # -----
+  nyTimes:
+    title: The New York Times
+    type: other
+    inputPrefix: "\n\nHeadline:\n\n"
+    inputSuffix: "\n\nArticle:"
+    stopSequences: "Headline:"
+    prompt: |-
+      The following article appeared in The New York Times, a major American newspaper. It is long, detailed, and follows the best journalistic practices.
