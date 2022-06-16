@@ -82,7 +82,6 @@ function App() {
       texarea: textarea,
       inputField: inputField,
     });
-    addCharsToSessionTotal(prompt.length);
     setTextarea(temp_textarea);
     setInputField("");
     performCompletion({
@@ -94,6 +93,7 @@ function App() {
     })
       .catch((error) => {
         if (error.name !== "AbortError") {
+          addCharsToSessionTotal(prompt.length);
           throw error;
         }
       })
@@ -111,6 +111,7 @@ function App() {
         output = output.replace(/\n/g, " ");
       }
       setTextarea(body.prompt + output);
+      addCharsToSessionTotal(body.prompt.length);
     } else {
       setAlertText(data.error.message);
       setTimeout(() => {
