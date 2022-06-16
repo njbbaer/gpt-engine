@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import TextareaAutosize from "react-textarea-autosize";
 import yaml from "js-yaml";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import ConfigurationFields from "./ConfigurationFields";
 import Alert from "./Alert";
@@ -31,6 +32,15 @@ function App() {
     stopSequences: "",
     stripNewlines: false,
   });
+
+  useHotkeys(
+    "ctrl+enter",
+    () => {
+      if (!isLoading) handleGenerate();
+    },
+    { enableOnTags: ["TEXTAREA"] },
+    [textarea, inputField]
+  );
 
   // Fetch templates from YAML file
   useEffect(() => {
