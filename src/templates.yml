@@ -154,6 +154,16 @@ templates:
       Dr. Humerus: Oh dear. I'm afraid we'll need to amputate.
       
       Transcript 2:
+  bartender:
+    title: Bartender
+    type: conversation
+    inputPrefix: "\nMan: "
+    inputSuffix: "\nBartender:"
+    stopSequences: "Man:"
+    prompt: |-
+      A man walks into a bar. The following is his conversation with the bartender.
+      
+      Transcript:
   # -----
   # Other
   # -----
