@@ -47,13 +47,13 @@ function App() {
   // Fetch templates from YAML file
   useEffect(() => {
     if (!templatesUrl) return;
-    const templatesUrlAllOrigins = `https://api.allorigins.win/get?url=${encodeURIComponent(
+    const templatesUrlAllOrigins = `https://api.allorigins.win/raw?url=${encodeURIComponent(
       templatesUrl
-    )}`;
+    )}?no-cache=${Date.now()}`;
     fetch(templatesUrlAllOrigins)
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
-        const loadedTemplates = yaml.load(data.contents);
+        const loadedTemplates = yaml.load(data);
         if (typeof loadedTemplates !== "object" || loadedTemplates == null)
           throw Error();
         setTemplates(loadedTemplates);
