@@ -11,7 +11,6 @@ import Alert from "./Alert";
 import InputButtons from "./InputButtons";
 import InfoBoxes from "./InfoBoxes";
 import ConfigurationButtons from "./ConfigurationButtons";
-import templatesPath from "./templates.yml";
 
 function App() {
   const abortController = useRef(new AbortController());
@@ -24,6 +23,9 @@ function App() {
   const [undoState, setUndoState] = useState({ textarea: "", inputField: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [templates, setTemplates] = useState({});
+  const [templatesUrl, setTemplateUrl] = useState(
+    localStorage.getItem("templatesUrl") || ""
+  );
   const [configuration, setConfiguration] = useState({
     maxTokens: "",
     temperature: "",
@@ -44,12 +46,32 @@ function App() {
 
   // Fetch templates from YAML file
   useEffect(() => {
-    fetch(templatesPath).then((response) => {
-      response.text().then((data) => {
-        setTemplates(yaml.load(data));
+    if (!templatesUrl) return;
+    const templatesUrlAllOrigins = `https://api.allorigins.win/get?url=${encodeURIComponent(
+      templatesUrl
+    )}`;
+    fetch(templatesUrlAllOrigins)
+      .then((response) => response.json())
+      .then((data) => {
+        const loadedTemplates = yaml.load(data.contents);
+        if (typeof loadedTemplates !== "object" || loadedTemplates == null)
+          throw Error();
+        setTemplates(loadedTemplates);
+      })
+      .catch(() => {
+        setTemplates({});
       });
-    });
-  }, []);
+  }, [templatesUrl]);
+
+  function isTemplatesValid() {
+    return Object.keys(templates).length > 0;
+  }
+
+  function handleChangeTemplateUrl(event) {
+    const newTemplateUrl = event.target.value;
+    setTemplateUrl(newTemplateUrl);
+    localStorage.setItem("templatesUrl", newTemplateUrl);
+  }
 
   function handleChangeApiKey(event) {
     const newApiKey = event.target.value;
@@ -188,6 +210,17 @@ function App() {
           data-lpignore="true"
           onChange={handleChangeApiKey}
           value={apiKey}
+        />
+      </Form.Group>
+      <Form.Group className="mt-3">
+        <Form.Label>Templates URL</Form.Label>
+        <Form.Control
+          placeholder="Enter a prompt templates URL"
+          data-lpignore="true"
+          onChange={handleChangeTemplateUrl}
+          value={templatesUrl}
+          isValid={isTemplatesValid()}
+          isInvalid={!isTemplatesValid()}
         />
       </Form.Group>
       <Form.Group className="mt-3">
