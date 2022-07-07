@@ -80,14 +80,18 @@ function App() {
   }
 
   function getTemplate(key) {
-    const template = templates.templates[key];
-    if (!template) debugger;
-    const defaults = templates.defaults[template.type];
-    return { ...defaults, ...template };
+    try {
+      const template = templates.templates[key];
+      const defaults = templates.defaults[template.type];
+      return { ...defaults, ...template };
+    } catch (e) {
+      return null;
+    }
   }
 
   function handleSelectTemplate(key) {
     const template = getTemplate(key);
+    if (!template) return;
     setSelectedTemplate(key);
     setTextarea(template.prompt);
     setConfiguration({
